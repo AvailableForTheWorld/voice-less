@@ -2,7 +2,7 @@ import type { NetlessApp } from "@netless/window-manager";
 
 import { createApp } from "vue";
 import styles from "./style.css?inline";
-import App from "./components/App.vue";
+import App from "./components/App2.vue";
 
 /**
  * Register it before joining room:
@@ -20,7 +20,7 @@ import App from "./components/App.vue";
  * https://github.com/netless-io/window-manager/blob/master/docs/develop-app.md
  */
 const Counter: NetlessApp = {
-  kind: "Counter",
+  kind: "大音希声",
   setup(context) {
     const box = context.getBox();
     box.mountStyles(styles);
