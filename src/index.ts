@@ -2,7 +2,7 @@ import type { NetlessApp } from "@netless/window-manager";
 
 import { createApp } from "vue";
 import styles from "./style.css?inline";
-import App from "./components/App.vue";
+import App from "./components/App2.vue";
 
 /**
  * Register it before joining room:
