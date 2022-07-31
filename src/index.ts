@@ -19,8 +19,8 @@ import App from "./components/App2.vue";
  * Read more about how to make a netless app here:
  * https://github.com/netless-io/window-manager/blob/master/docs/develop-app.md
  */
-const Counter: NetlessApp = {
-  kind: "Counter",
+const VoiceLess: NetlessApp = {
+  kind: "大音希声",
   setup(context) {
     const box = context.getBox();
     box.mountStyles(styles);
@@ -39,4 +39,4 @@ const Counter: NetlessApp = {
   },
 };
 
-export default Counter;
+export default VoiceLess;

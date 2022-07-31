@@ -38,4 +38,21 @@ const insertMedia : () => void = async () => {
 // watchEffect(() => {
 //   console.log("App.vue: count =", count.value);
 // });
+const storage = context.createStorage("Group", { groupName: '大音希声' });
+const real_count = ref(storage.state.groupName);
+
+const groupName = computed<string>({
+  get: () => real_count.value,
+  set: (groupName) => storage.setState({ groupName }),
+});
+
+onMounted(() =>
+  storage.addStateChangedListener(() => {
+    real_count.value = storage.state.groupName;
+  })
+);
+
+watchEffect(() => {
+  console.log("App.vue: groupName =", groupName.value);
+});
 </script>
