@@ -2,7 +2,9 @@ import type { NetlessApp } from "@netless/window-manager";
 
 import { createApp } from "vue";
 import styles from "./style.css?inline";
-import App from "./components/App2.vue";
+import App from "./App.vue";
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 
 /**
  * Register it before joining room:
@@ -32,7 +34,8 @@ const VoiceLess: NetlessApp = {
     const app = createApp(App).provide("context", context);
 
     app.mount($content);
-
+    app.use(ElementPlus);
+    
     context.emitter.on("destroy", () => {
       app.unmount();
     });

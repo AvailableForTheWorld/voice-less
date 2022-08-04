@@ -1,6 +1,8 @@
 <template>
   <div>
-    <button @click="insertMedia">插入视频</button>
+    <header-container></header-container>
+    <main-container></main-container>
+    <footer-container></footer-container>
   </div>
 </template>
 
@@ -8,8 +10,10 @@
 import type { AppContext } from "@netless/window-manager";
 import type { FastboardApp } from "@netless/fastboard-core";
 import { computed, inject, onMounted, ref, watchEffect } from "vue";
+import MainContainer from './views/main/index.vue'
+import FooterContainer from './views/footer/index.vue'
+import HeaderContainer from './views/header/index.vue'
 
-debugger;
 // console.log("fasterboard",window.fastboard);
 
 const context = inject<AppContext>("context");
