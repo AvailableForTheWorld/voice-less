@@ -28,11 +28,12 @@ const VoiceLess: NetlessApp = {
     box.mountStyles(styles);
 
     const $content = document.createElement("div");
-    $content.className = "app-counter";
+    $content.className = "app-container";
     box.mountContent($content);
 
-    const app = createApp(App).provide("context", context);
+    const app = createApp(App);
 
+    window.context = context;
     app.mount($content);
     app.use(ElementPlus);
     
