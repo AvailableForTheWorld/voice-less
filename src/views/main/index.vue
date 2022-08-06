@@ -2,7 +2,7 @@
   <div class="main-container">
     <div class="user-message" v-for="item in list">
       <el-avatar class="user-avatar" :size="50"></el-avatar>
-      <el-card class="user-content" shadow="hover"> {{item.content}} </el-card>
+      <el-card class="user-content" shadow="hover"> <div class="text-content" v-html="item.content"></div> </el-card>
       <div class="user-name">{{item.id}}</div>
     </div>
     
@@ -26,6 +26,9 @@ const props = defineProps(['list'])
     }
     .user-content {
       flex: 1;
+      .text-content{
+        white-space: pre-line;
+      }
     }
     .user-name {
       position: absolute;
