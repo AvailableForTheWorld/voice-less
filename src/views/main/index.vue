@@ -12,17 +12,6 @@
 <script lang="ts" setup>
 import { defineProps,watch,toRefs,ref, watchEffect } from 'vue'
 const props = defineProps(['list'])
-// const {list}= toRefs(props)
-
-
-// watch(
-//   storage,
-//   (new,old) => {
-//     console.log("storage in main",new,old)
-//   },
-//   { deep: true }
-// )
-
 
 </script>
 

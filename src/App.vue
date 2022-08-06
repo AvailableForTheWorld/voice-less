@@ -29,7 +29,6 @@ if (!context) throw new Error("must call provide('context') before mount App");
 const storage = context.createStorage("mess-list", { arr: [] });
 
 const pushMessage = (item) => {
-  debugger;
   const arr1 = storage.state.arr;
   storage.setState({arr:[...arr1,item]})
   console.log("storage.state.arr",storage.state.arr)
@@ -45,7 +44,6 @@ const messList = ref(storage.state.arr);
 
 onMounted(() =>
   storage.addStateChangedListener(() => {
-    debugger;
     messList.value = storage.state.arr;
   })
 );
