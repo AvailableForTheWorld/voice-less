@@ -1,18 +1,16 @@
 <template>
   <div class="main-container">
     <div class="user-message" v-for="item in list" >
-      <el-avatar class="user-avatar" :size="50"></el-avatar>
+      <el-avatar class="user-avatar" :size="50" :style="{backgroundColor:info[item.id].color}">{{item.id}}</el-avatar>
       <el-card class="user-content" shadow="hover"> <div class="text-content" v-html="item.content"></div> </el-card>
-      <div class="user-name">{{item.id}}</div>
     </div>
     
   </div>
 </template>
 
 <script lang="ts" setup>
-import { defineProps,watch,toRefs,ref, watchEffect } from 'vue'
-const props = defineProps(['list'])
-
+import { defineProps,watch,toRefs,ref, watchEffect, onUpdated } from 'vue'
+const props = defineProps(['list','info'])
 </script>
 
 <style lang="scss">
@@ -26,18 +24,13 @@ const props = defineProps(['list'])
     .user-avatar {
       margin: 10px 20px 10px 0;
       flex-shrink: 0;
+      background-color: skyblue;
     }
     .user-content {
       
       .text-content{
         white-space: pre-line;
       }
-    }
-    .user-name {
-      position: absolute;
-      top: 50%;
-      margin-left: 5px;
-      transform: translateY(-50%);
     }
   }
   

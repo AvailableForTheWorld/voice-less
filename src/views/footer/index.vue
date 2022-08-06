@@ -1,7 +1,7 @@
 <template>
   <div class="footer-container">
     <div>
-        <el-input class="input-container" v-model="input" placeholder="Please input" type="textarea" />
+        <el-input class="input-container" v-model="input" placeholder="Please input" type="textarea" rows="1" />
         <el-button type="primary" >录音</el-button>
         <el-button type="primary" @click="handleInputClick">发送</el-button>
     </div>

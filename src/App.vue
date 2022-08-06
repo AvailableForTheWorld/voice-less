@@ -1,7 +1,7 @@
 <template>
   <div>
     <header-container></header-container>
-    <main-container :list="messList"></main-container>
+    <main-container :list="messList" :info="infoList"></main-container>
     <footer-container @pushMessage="pushMessage"></footer-container>
   </div>
 </template>
@@ -25,18 +25,27 @@ if (!context) throw new Error("must call provide('context') before mount App");
 //   console.log("mid: ",mid)
 // }
 
-
-const storage = context.createStorage("mess-list", { arr: [] });
+// 头像颜色选择
+const color = ['#a8d8ea','#aa96da','#fcbad3','#ffffd2','#ffc7c7','#ffe2e2','#f6f6f6','#8785a2']
+const storage = context.createStorage("mess-list", { arr: [],info:{} });
 
 const pushMessage = (item) => {
   const arr1 = storage.state.arr;
+  const info = storage.state.info;
+  let cnt = storage.state.info.cnt;
+  if(!cnt){
+    cnt = 0;
+  }
+  if(!info[item.id]){
+    storage.setState({info:{...info,[item.id]:{color:color[cnt]},cnt:(cnt+1)%(color.length),}})
+  }
   storage.setState({arr:[...arr1,item]})
-  console.log("storage.state.arr",storage.state.arr)
 }
 
 const messList = ref(storage.state.arr);
+const infoList = ref(storage.state.info);
 
-const container = ref(null)
+const container = ref(null);
 // const list1 = computed<string>({
 //   get: () => mess_list.value,
 //   set: (arr) => storage.setState({ arr }),
@@ -50,6 +59,7 @@ const scrollToEnd = ()=>{
 onMounted(() =>{
     storage.addStateChangedListener(() => {
       messList.value = storage.state.arr;
+      infoList.value = storage.state.info;
     })
     scrollToEnd();
   }
