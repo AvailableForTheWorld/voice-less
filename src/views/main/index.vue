@@ -25,9 +25,10 @@ const props = defineProps(['list'])
     margin: 20px 0;
     .user-avatar {
       margin: 10px 20px 10px 0;
+      flex-shrink: 0;
     }
     .user-content {
-      flex: 1;
+      
       .text-content{
         white-space: pre-line;
       }
