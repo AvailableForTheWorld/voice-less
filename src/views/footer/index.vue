@@ -17,6 +17,7 @@ const handleInputClick = () => {
   emit('push-message',{
     content: input.value,
     id: window.context.getRoom().observerId,
+    date: new Date().getTime(),
   })
   input.value = ''
 }
