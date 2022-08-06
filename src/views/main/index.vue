@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <div class="user-message" v-for="item in list">
+    <div class="user-message" v-for="item in list" >
       <el-avatar class="user-avatar" :size="50"></el-avatar>
       <el-card class="user-content" shadow="hover"> <div class="text-content" v-html="item.content"></div> </el-card>
       <div class="user-name">{{item.id}}</div>
@@ -17,10 +17,12 @@ const props = defineProps(['list'])
 
 <style lang="scss">
 .main-container {
-  padding: 20px;
+  padding: 40px 20px;
   .user-message{
     position: relative;
     display: flex;
+    align-items: center;
+    margin: 20px 0;
     .user-avatar {
       margin: 10px 20px 10px 0;
     }

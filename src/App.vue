@@ -9,7 +9,7 @@
 <script lang="ts" setup>
 import type { AppContext } from "@netless/window-manager";
 import type { FastboardApp } from "@netless/fastboard-core";
-import { computed, inject, onMounted, reactive, ref, watchEffect } from "vue";
+import { computed, inject, onMounted, onUpdated, reactive, ref, watchEffect } from "vue";
 import MainContainer from './views/main/index.vue'
 import FooterContainer from './views/footer/index.vue'
 import HeaderContainer from './views/header/index.vue'
@@ -36,17 +36,28 @@ const pushMessage = (item) => {
 
 const messList = ref(storage.state.arr);
 
-
+const container = ref(null)
 // const list1 = computed<string>({
 //   get: () => mess_list.value,
 //   set: (arr) => storage.setState({ arr }),
 // });
 
-onMounted(() =>
-  storage.addStateChangedListener(() => {
-    messList.value = storage.state.arr;
-  })
+const scrollToEnd = ()=>{
+  const dom = document.querySelector('.telebox-content')
+  dom?.scrollTo(0,dom.scrollHeight);
+}
+
+onMounted(() =>{
+    storage.addStateChangedListener(() => {
+      messList.value = storage.state.arr;
+    })
+    scrollToEnd();
+  }
 );
+
+onUpdated(()=>{
+  scrollToEnd();
+})
 
 watchEffect(() => {
   if(messList.value){
