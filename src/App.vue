@@ -1,7 +1,7 @@
 <template>
   <div>
     <header-container></header-container>
-    <main-container :list="list"></main-container>
+    <main-container :list="messList"></main-container>
     <footer-container @pushMessage="pushMessage"></footer-container>
   </div>
 </template>
@@ -25,30 +25,35 @@ if (!context) throw new Error("must call provide('context') before mount App");
 //   console.log("mid: ",mid)
 // }
 
-const list = reactive([])
+
+const storage = context.createStorage("mess-list", { arr: [] });
 
 const pushMessage = (item) => {
-  list.push(item)
-  
+  debugger;
+  const arr1 = storage.state.arr;
+  storage.setState({arr:[...arr1,item]})
+  console.log("storage.state.arr",storage.state.arr)
 }
 
-const storage = context.createStorage("Group", { arr: [] });
-const mess_list = ref(storage.state.arr);
+const messList = ref(storage.state.arr);
 
 
-const list1 = computed<string>({
-  get: () => mess_list.value,
-  set: (arr) => storage.setState({ arr }),
-});
+// const list1 = computed<string>({
+//   get: () => mess_list.value,
+//   set: (arr) => storage.setState({ arr }),
+// });
 
-// onMounted(() =>
-//   storage.addStateChangedListener(() => {
-//     mess_list.value = storage.state.groupName;
-//   })
-// );
+onMounted(() =>
+  storage.addStateChangedListener(() => {
+    debugger;
+    messList.value = storage.state.arr;
+  })
+);
 
 watchEffect(() => {
-  
+  if(messList.value){
+    console.log('messlist',messList.value)
+  }
 });
 </script>
 <style lang="scss">

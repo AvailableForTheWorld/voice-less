@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <div class="user-message" v-for="item in props.list">
+    <div class="user-message" v-for="item in list">
       <el-avatar class="user-avatar" :size="50"></el-avatar>
       <el-card class="user-content" shadow="hover"> {{item.content}} </el-card>
       <div class="user-name">{{item.id}}</div>
@@ -10,10 +10,20 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue'
-const props = defineProps({
-  list:Object
-})
+import { defineProps,watch,toRefs,ref, watchEffect } from 'vue'
+const props = defineProps(['list'])
+// const {list}= toRefs(props)
+
+
+// watch(
+//   storage,
+//   (new,old) => {
+//     console.log("storage in main",new,old)
+//   },
+//   { deep: true }
+// )
+
+
 </script>
 
 <style lang="scss">
