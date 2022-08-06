@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
-    <div class="user-message" v-for="item in list" >
-      <el-avatar class="user-avatar" :size="50" :style="{backgroundColor:info[item.id].color}">{{item.id}}</el-avatar>
+    <div class="user-message" v-for="(item,index) in list" >
+      <el-avatar class="user-avatar" :size="50" :style="{backgroundColor:info[item.id].color,visibility:judgeAvatarDuplicated(item,index)?'visible':'hidden'}">{{item.id}}</el-avatar>
       <el-card class="user-content" shadow="hover"> <div class="text-content" v-html="item.content"></div> </el-card>
     </div>
     
@@ -11,6 +11,14 @@
 <script lang="ts" setup>
 import { defineProps,watch,toRefs,ref, watchEffect, onUpdated } from 'vue'
 const props = defineProps(['list','info'])
+
+const judgeAvatarDuplicated = (item,index)=>{
+  if(index && props.list[index-1].id == item.id){
+    return false;
+  }
+  return true;
+}
+
 </script>
 
 <style lang="scss">
