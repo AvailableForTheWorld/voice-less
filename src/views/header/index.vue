@@ -1,6 +1,6 @@
 <template>
   <div class="header-container">
-    <div>this is header-container body</div>
+    <div>header</div>
   </div>
 </template>
 
@@ -10,10 +10,15 @@
 
 <style lang="scss">
 .header-container{
-    div{
-        width: 200px;
-        height: 200px;
-        background-color: blue;
-    }
+  width: 100%;
+  position: fixed;
+  top: 20px;
+  z-index: 10;
+  div{
+    height: 50px;
+    background-color: white;
+    text-align: center;
+    line-height: 50px;
+  }
 }
 </style>
