@@ -1,126 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Video Self-Rendering -- Agora</title>
-  <link rel="stylesheet" href="../assets/bootstrap.min.css">
-  <link rel="stylesheet" href="./index.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>弹出窗口单击确定弹出</title>
+  <link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
   <style>
-    .box {
-      width: 50%;
-      margin-top: 10%;
-      margin: auto;
-      padding: 28px;
-      height: 500px;
-      border: 1px #111 solid;
-      display: none;
-      /* 默认对话框隐藏 */
-    }
+    body{margin: 10px;}
+    .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
   </style>
 </head>
-
 <body>
-  <input type="button" onClick="msgbox()" value="点击弹出输入框">
+ 
+<button id="open"  class="layui-btn layui-btn-primary">弹出窗口</button>
 
-  <div id='inputbox' class="box">
-    <div class="container-fluid banner">
-      <p class="banner-text">Video Self-Rendering</p>
-    </div>
-    <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>Congratulations!</strong><span> You can invite others to watch your live by click </span><a href=""
-        target="_blank">here</a>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
+  
+<script src="layui/layui.js"></script>
+<script>
+layui.config({
+  version: '1568076536616' //为了更新 js 缓存，可忽略
+});
+ 
+layui.use(['layer'], function(){
+  var layer = layui.layer; //弹层
+  var $ = layui.$;
+  $("#open").on("click",function(){
+    layer.open({
+        type: 2
+        , title: '弹出窗口'
+        , area: ['600px', '400px']
+        , content: './wantopen/index.html'
+        , btn: ['发起', '连接'] 
+        , yes: function (index, layero) {
+            var iframeWindow = window['layui-layer-iframe' + index];
+            obj = iframeWindow.document.getElementById("saveArtPontItemSetView");
+            //保存按钮单击事件
+            iframeWindow.layui.form.on('submit(save)', function (data) {
+                console.log(data);
+                return false;
+            });
+            obj.click();
 
-    <div class="container">
-      <form id="join-form" name="join-form">
-        <div class="row join-info-group">
-          <div class="col-sm">
-            <p class="join-info-text">AppID</p>
-            <input id="appid" type="text" placeholder="enter appid" required>
-            <p class="tips">If you don`t know what is your appid, checkout <a
-                href="https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id">this</a>
-            </p>
-          </div>
-          <div class="col-sm">
-            <p class="join-info-text">Token(optional)</p>
-            <input id="token" type="text" placeholder="enter token">
-            <p class="tips">If you don`t know what is your token, checkout <a
-                href="https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-namekeyadynamic-key">this</a>
-            </p>
-          </div>
-          <div class="col-sm">
-            <p class="join-info-text">Channel</p>
-            <input id="channel" type="text" placeholder="enter channel name" required>
-            <p class="tips">If you don`t know what is your channel, checkout <a
-                href="https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#channel">this</a></p>
-          </div>
-          <div class="col-sm">
-            <p class="join-info-text">User ID(optional)</p>
-            <input id="uid" type="text" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')"
-              onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="Enter the user ID">
-          </div>
-        </div>
+        }
+        , cancel : function () {
+           
+        }
+        , btn2: function () {
+            
+            // layer.closeAll();
+        }
 
-        <div class="button-group">
-          <button id="host-join" type="submit" class="btn btn-primary btn-sm">Join as host</button>
-          <div class="btn-group">
-            <button id="audience-join" type="button" class="btn btn-primary btn-sm" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Join as audience
-            </button>
-            <div class="audience dropdown-menu">
-              <a id="lowLatency" class="dropdown-item" label="Interactive Live Streaming Standard" href="#">Interactive
-                Live Streaming Standard</a>
-              <a id="ultraLowLatency" class="dropdown-item" label="Interactive Live Streaming Premium"
-                href="#">Interactive Live Streaming Premium</a>
-            </div>
-          </div>
-          <button id="leave" type="button" class="btn btn-primary btn-sm" disabled>Leave</button>
-        </div>
-      </form>
-      <!-- Single button -->
-      <div class="row video-group">
-        <div class="col">
-          <p id="local-player-name" class="player-name"></p>
-          <div id="local-player" class="player"></div>
-          <div id="local-player-mirror-area" class="player video-mirror" title="Video Mirror"
-            style="display: none; border: 2px dashed red ;">
-            <div id="local-player-mirror"
-              style="width: 100%; height: 100%; position: relative; overflow: hidden; background-color: black;">
-              <video id="local-player-mirror-video-track" class="agora_video_player" playsinline="" muted=""
-                style="width: 100%; height: 100%; position: absolute; left: 0px; top: 0px; transform: rotateY(180deg); object-fit: cover;">
-              </video>
-            </div>
 
-          </div>
-        </div>
-        <div class="w-100"></div>
-        <div class="col">
-          <div id="remote-playerlist"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script src="../assets/jquery-3.4.1.min.js"></script>
-  <script src="../assets/bootstrap.bundle.min.js"></script>
-  <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
-  <script src="./index.js"></script>
-  <script>
 
-    function msgbox() {
-      var style = document.getElementById('inputbox').style.display
-      console.log(style);
+    });
+  });
+  
 
-      let div = document.querySelector('#inputbox')
-      div.style.display = style == "block" ? "none" : "block"
-    }
-  </script>
+});
+</script>
 </body>
-
-</html>
+</html>        
+        

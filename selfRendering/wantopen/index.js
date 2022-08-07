@@ -16,6 +16,21 @@ var options = {
     audienceLatency: 2
 };
 
+let audioCtx = new AudioContext();
+
+// let bufAudioTrack = AgoraRTC.createBufferSourceAudioTrack({
+//     source: file,
+// });
+
+// Stereo
+var channels = 2;
+
+// Create an empty two second stereo buffer at the
+// sample rate of the AudioContext
+var frameCount = audioCtx.sampleRate * 2.0;
+var myArrayBuffer = audioCtx.createBuffer(channels, frameCount, audioCtx.sampleRate);
+
+
 // the demo can auto join channel with params in url
 $(() => {
     var urlParams = new URL(location.href).searchParams;
@@ -102,6 +117,44 @@ async function join() {
         localTracks.videoTrack.play("local-player");
         $("#local-player-name").text(`localTrack(${options.uid})`);
 
+        // 创建音频回调
+        localTracks.audioTrack.setAudioFrameCallback( (buffer) => {
+            for (let channel = 0; channel < buffer.numberOfChannels; channel += 1) {
+              // Float32Array with PCM data
+              const currentChannelData = buffer.getChannelData(channel);              
+              // console.log("PCM data in channel", channel, currentChannelData);
+            }
+          }, 2048);
+          
+        // 停止音频回调
+        // localTracks.audioTrack.setAudioFrameCallback(null);
+
+        const bufferAudioOptions = {
+            "cacheOnlineFile":true,
+            "encoderConfig":"",
+            "source": currentChannelData,
+        };
+
+        // Get an AudioBufferSourceNode.
+        // This is the AudioNode to use when we want to play an AudioBuffer
+        var source = audioCtx.createBufferSource(bufferAudioOptions);
+
+        source.set
+
+        // set the buffer in the AudioBufferSourceNode
+        source.buffer = currentChannelData;
+
+        // connect the AudioBufferSourceNode to the
+        // destination so we can hear the sound
+        source.connect(audioCtx.destination);
+
+        // start the source playing
+        source.start();
+
+        source.onended = () => {
+            console.log("White noise finished.");
+          };
+
         //create the mirror of local player
         $("#local-player-mirror-area").show();
         var mirrorPlayer = document.getElementById("local-player-mirror-video-track");
@@ -119,10 +172,13 @@ async function join() {
     }
 }
 
+
+
 async function leave() {
     for (trackName in localTracks) {
         var track = localTracks[trackName];
         if (track) {
+            track.setAudioFrameCallback(null);
             track.stop();
             track.close();
             localTracks[trackName] = undefined;
