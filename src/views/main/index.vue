@@ -1,8 +1,29 @@
 <template>
   <div class="main-container">
+      
     <div class="user-message" v-for="(item,index) in list" >
-      <el-avatar class="user-avatar" :size="50" :style="{backgroundColor:info[item.id].color,visibility:judgeAvatarDuplicated(item,index)?'visible':'hidden'}">{{item.id}}</el-avatar>
-      <el-card @mousemove="handleCardHover(index)" @mouseout="handleCardMouseLeave()" class="user-content" shadow="hover"> <div class="text-content" v-html="item.content"></div> </el-card>
+      <el-avatar class="user-avatar" :size="50" :style="{backgroundColor:info[item.id]?.color,visibility:judgeAvatarDuplicated(item,index)?'visible':'hidden'}">{{item.id}}</el-avatar>
+      <el-popover
+        placement="top-start"
+        :width="'auto'"
+        trigger="hover"
+        :hide-after="0"
+      >
+        <template #reference>
+          <el-card @mousemove="handleCardHover(index)" @mouseout="handleCardMouseLeave()" class="user-content" shadow="hover"> <div class="text-content" v-html="item.content"></div> </el-card>
+        </template>
+        <div class="flex justify-space-between mb-0 flex-wrap gap-2">
+        <el-button
+          v-for="button in buttons"
+          :key="button.text"
+          :type="button.type"
+          text
+          @click="handleCardOptionsClick(button.text,index)"
+        >{{ button.text }}
+        </el-button>
+      </div>
+      </el-popover>
+      
       <div v-if="isCardHover===index" class="show-time">{{getDate(item.date)}}</div>
     </div>
     
@@ -10,8 +31,15 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps,watch,toRefs,ref, watchEffect, onUpdated, computed } from 'vue'
+import { defineProps,watch,toRefs,ref, watchEffect, onUpdated, computed, defineEmits } from 'vue'
 const props = defineProps(['list','info'])
+
+const emit = defineEmits(['del-message'])
+
+const buttons = [
+  { type: 'primary', text: '删除' },
+  { type: 'success', text: '多选' },
+] as const
 
 const judgeAvatarDuplicated = (item,index) => {
   if(index && props.list[index-1].id == item.id){
@@ -29,6 +57,13 @@ const handleCardHover = (index)=> {
 const handleCardMouseLeave = () => {
   isCardHover.value = -1
 }
+
+const handleCardOptionsClick = (text,index) => {
+  if(text === '删除'){
+    emit('del-message',index);
+  }
+}
+
 
 const getDate = (date)=>{
   const oldVal = new Date(date), newVal = new Date();
@@ -55,7 +90,7 @@ const getDate = (date)=>{
 
 <style lang="scss">
 .main-container {
-  padding: 40px 20px;
+  padding: 50px 20px 30px;
   .user-message{
     position: relative;
     display: flex;

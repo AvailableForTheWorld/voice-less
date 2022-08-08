@@ -1,7 +1,7 @@
 <template>
   <div>
     <header-container></header-container>
-    <main-container :list="messList" :info="infoList"></main-container>
+    <main-container :list="messList" :info="infoList" @delMessage="delMessage"></main-container>
     <footer-container @pushMessage="pushMessage"></footer-container>
   </div>
 </template>
@@ -40,6 +40,13 @@ const pushMessage = (item) => {
     storage.setState({info:{...info,[item.id]:{color:color[cnt]},cnt:(cnt+1)%(color.length),}})
   }
   storage.setState({arr:[...arr1,item]})
+}
+
+const delMessage = (pos) => {
+  const arr = storage.state.arr.filter((item,index)=> {
+    return pos !== index;
+  })
+  storage.setState({arr})
 }
 
 const messList = ref(storage.state.arr);
