@@ -2,6 +2,9 @@
   <div class="main-container">
       
     <div class="user-message" v-for="(item,index) in list" >
+      <div class="checkbox-wrapper">
+        <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item)"/>
+      </div>
       <el-avatar class="user-avatar" :size="50" :style="{backgroundColor:info[item.id]?.color,visibility:judgeAvatarDuplicated(item,index)?'visible':'hidden'}">{{item.id}}</el-avatar>
       <el-popover
         placement="top-start"
@@ -34,12 +37,14 @@
 import { defineProps,watch,toRefs,ref, watchEffect, onUpdated, computed, defineEmits } from 'vue'
 const props = defineProps(['list','info'])
 
-const emit = defineEmits(['del-message'])
+const emit = defineEmits(['del-message','check-message'])
 
 const buttons = [
   { type: 'primary', text: '删除' },
   { type: 'success', text: '多选' },
 ] as const
+
+const isChecked = ref(false)
 
 const judgeAvatarDuplicated = (item,index) => {
   if(index && props.list[index-1].id == item.id){
@@ -49,6 +54,10 @@ const judgeAvatarDuplicated = (item,index) => {
 }
 
 const isCardHover = ref(-1)
+
+const handleCheckBox = (item) => {
+  emit('check-message',item)
+}
 
 const handleCardHover = (index)=> {
   isCardHover.value = index
@@ -96,6 +105,12 @@ const getDate = (date)=>{
     display: flex;
     align-items: center;
     margin: 20px 0;
+    .checkbox-wrapper{
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      line-height: 50px;
+    }
     .user-avatar {
       margin: 10px 20px 10px 0;
       flex-shrink: 0;
