@@ -10,32 +10,30 @@
 </template>
 
 <script lang="ts" setup>
-
 import { ref, defineEmits } from 'vue'
 const isAllChecked = ref(false)
 
 const emit = defineEmits(['changeAllChecked'])
 
 const changeAll = (isAllChecked) => {
-  emit('changeAllChecked',!isAllChecked);
+  emit('changeAllChecked', !isAllChecked)
 }
-
 </script>
 
 <style lang="scss">
-.header-container{
+.header-container {
   width: 100%;
-  position: fixed;
-  top: 20px;
+  position: absolute;
+  top: 0px;
   z-index: 10;
   background-color: white;
-  .all-in{
+  .all-in {
     height: 50px;
     text-align: left;
     line-height: 50px;
     margin-left: 20px;
     display: flex;
-    .checkbox{
+    .checkbox {
       width: 50px;
       height: 50px;
       text-align: center;
