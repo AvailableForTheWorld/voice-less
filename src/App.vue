@@ -41,6 +41,7 @@ const pushMessage = (item) => {
   }
   const item1 = { ...item, isChecked:false }
   storage.setState({arr:[...arr1,item1]})
+  scrollToEnd();
 }
 
 const delMessage = (pos) => {
@@ -51,6 +52,7 @@ const delMessage = (pos) => {
 }
 
 const checkMessage = (val) => {
+  debugger;
   const arr = storage.state.arr.map((item,index)=>{
     if(index===val.index){
       const changeItem = val;
@@ -94,9 +96,6 @@ onMounted(() =>{
   }
 );
 
-onUpdated(()=>{
-  scrollToEnd();
-})
 
 watchEffect(() => {
   if(messList.value){
