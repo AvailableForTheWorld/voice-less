@@ -2,7 +2,7 @@
   <div class="header-container">
     <div class="all-in">
       <div class="checkbox">
-        <input type="checkbox" @change="changeAll(isAllChecked)" />
+        <input type="checkbox" @change="changeAll" />
       </div>
       <label>全选</label>
     </div>
@@ -16,8 +16,9 @@ const isAllChecked = ref(false)
 
 const emit = defineEmits(['changeAllChecked'])
 
-const changeAll = (isAllChecked) => {
-  emit('changeAllChecked',!isAllChecked);
+const changeAll = () => {
+  isAllChecked.value = ! isAllChecked.value;
+  emit('changeAllChecked',isAllChecked);
 }
 
 </script>
