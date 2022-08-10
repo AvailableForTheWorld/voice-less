@@ -34,7 +34,10 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps,watch,toRefs,ref, watchEffect, onUpdated, computed, defineEmits } from 'vue'
+import { defineProps,watch,toRefs,ref, watchEffect, onMounted, computed, defineEmits } from 'vue'
+import bus from '../../utils/bus'
+
+
 const props = defineProps(['list','info'])
 
 const emit = defineEmits(['del-message','check-message'])
@@ -56,6 +59,11 @@ const judgeAvatarDuplicated = (item,index) => {
 const isCardHover = ref(-1)
 
 const handleCheckBox = (item) => {
+  if(item.isChecked){
+    bus.checkMinus();
+  }else{
+    bus.checkPlus();
+  }
   emit('check-message',item)
 }
 
@@ -73,6 +81,15 @@ const handleCardOptionsClick = (text,index) => {
   }
 }
 
+const checkedCnt = ref(0)
+onMounted(()=>{
+  const cnt = props.list.reduce((total,item)=>{
+    if(item.isChecked){
+      total += 1;
+    }
+  },0)
+  bus.setCheckCnt(cnt);
+})
 
 const getDate = (date)=>{
   const oldVal = new Date(date), newVal = new Date();
