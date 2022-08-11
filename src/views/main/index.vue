@@ -36,6 +36,9 @@
 <script lang="ts" setup>
 import { defineProps,watch,toRefs,ref, watchEffect, onMounted, computed, defineEmits } from 'vue'
 import bus from '../../utils/bus'
+import { useCheckBox } from '../../stores/index';
+
+const checkboxStore = useCheckBox();
 
 
 const props = defineProps(['list','info'])
@@ -60,9 +63,9 @@ const isCardHover = ref(-1)
 
 const handleCheckBox = (item) => {
   if(item.isChecked){
-    bus.checkMinus();
+    checkboxStore.cntMinus();
   }else{
-    bus.checkPlus();
+    checkboxStore.cntPlus();
   }
   emit('check-message',item)
 }
@@ -81,14 +84,13 @@ const handleCardOptionsClick = (text,index) => {
   }
 }
 
-const checkedCnt = ref(0)
 onMounted(()=>{
   const cnt = props.list.reduce((total,item)=>{
     if(item.isChecked){
       total += 1;
     }
   },0)
-  bus.setCheckCnt(cnt);
+  checkboxStore.setCheckedCnt(cnt);
 })
 
 const getDate = (date)=>{

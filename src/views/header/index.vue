@@ -12,6 +12,11 @@
 <script lang="ts" setup>
 
 import { ref, defineEmits } from 'vue'
+import { useCheckBox } from '../../stores';
+const checkboxStore = useCheckBox();
+checkboxStore.$subscribe((mutation,state)=>{
+  console.log("mutation:",mutation,"state",state)
+})
 const isAllChecked = ref(false)
 
 const emit = defineEmits(['changeAllChecked'])

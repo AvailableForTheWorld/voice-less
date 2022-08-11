@@ -5,7 +5,7 @@ import styles from "./style.css?inline";
 import App from "./App.vue";
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-
+import { createPinia } from "pinia";
 /**
  * Register it before joining room:
  * ```js
@@ -36,7 +36,7 @@ const VoiceLess: NetlessApp = {
     window.context = context;
     app.mount($content);
     app.use(ElementPlus);
-    
+    app.use(createPinia());
     context.emitter.on("destroy", () => {
       app.unmount();
     });
