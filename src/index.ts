@@ -34,9 +34,9 @@ const VoiceLess: NetlessApp = {
     const app = createApp(App);
 
     window.context = context;
-    app.mount($content);
     app.use(ElementPlus);
     app.use(createPinia());
+    app.mount($content);
     context.emitter.on("destroy", () => {
       app.unmount();
     });

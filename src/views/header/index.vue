@@ -12,7 +12,7 @@
 <script lang="ts" setup>
 
 import { ref, defineEmits } from 'vue'
-import { useCheckBox } from '../../stores';
+import { useCheckBox } from '../../stores/index';
 const checkboxStore = useCheckBox();
 checkboxStore.$subscribe((mutation,state)=>{
   console.log("mutation:",mutation,"state",state)

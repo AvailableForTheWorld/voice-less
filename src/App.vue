@@ -52,7 +52,6 @@ const delMessage = (pos) => {
 }
 
 const checkMessage = (val) => {
-  debugger;
   const arr = storage.state.arr.map((item,index)=>{
     if(index===val.index){
       const changeItem = val;
