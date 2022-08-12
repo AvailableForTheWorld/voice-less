@@ -139,8 +139,6 @@ async function join() {
         // This is the AudioNode to use when we want to play an AudioBuffer
         var source = audioCtx.createBufferSource(bufferAudioOptions);
 
-        source.set
-
         // set the buffer in the AudioBufferSourceNode
         source.buffer = currentChannelData;
 
