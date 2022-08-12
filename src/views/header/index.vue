@@ -17,12 +17,12 @@ const checkboxStore = useCheckBox();
 checkboxStore.$subscribe((mutation,state)=>{
   console.log("mutation:",mutation,"state",state)
 })
-const isAllChecked = ref(false)
+let isAllChecked : boolean = false
 
 const emit = defineEmits(['changeAllChecked'])
 
 const changeAll = () => {
-  isAllChecked.value = ! isAllChecked.value;
+  isAllChecked = ! isAllChecked;
   emit('changeAllChecked',isAllChecked);
 }
 
