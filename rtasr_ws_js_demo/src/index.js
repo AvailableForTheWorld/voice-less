@@ -11,14 +11,17 @@
  * 
  */
 
+// create Agora client
+var client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
+
 // 音频转码worker
 let recorderWorker = new Worker('./transformpcm.worker.js')
+
 // 记录处理的缓存音频
 let buffer = []
 let AudioContext = window.AudioContext || window.webkitAudioContext
 let notSupportTip = '请试用chrome浏览器且域名为localhost或127.0.0.1测试'
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
-
 
 // RTC 对象
 var localTracks = {
@@ -228,9 +231,9 @@ function handleUserPublished(user, mediaType) {
 
 function handleUserUnpublished(user, mediaType) {
   if (mediaType === 'video') {
-      const id = user.uid;
-      delete remoteUsers[id];
-      $(`#player-wrapper-${id}`).remove();
+    const id = user.uid;
+    delete remoteUsers[id];
+    $(`#player-wrapper-${id}`).remove();
   }
 }
 
@@ -247,14 +250,15 @@ $(() => {
   RTCoptions.appid = '4ae0df8d0d1741e6b54381adc43bceea';
   RTCoptions.channel = 'RTC1';
   RTCoptions.token = '0064ae0df8d0d1741e6b54381adc43bceeaIAAD3+PKAZEOWad0EcZH2/d9/ceFB6ewBVtY87T8gCquD6WCf6EAAAAAEACxI7THhl/4YgEAAQCFX/hi';
-  RTCoptions.uid = 1;
+  RTCoptions.uid = 2;
+  RTCoptions.role = "host";
 
   if (RTCoptions.appid && RTCoptions.channel) {
-      $("#uid").val(RTCoptions.uid);
-      $("#appid").val(RTCoptions.appid);
-      $("#token").val(RTCoptions.token);
-      $("#channel").val(RTCoptions.channel);
-      $("#join-form").submit();
+    $("#uid").val(RTCoptions.uid);
+    $("#appid").val(RTCoptions.appid);
+    $("#token").val(RTCoptions.token);
+    $("#channel").val(RTCoptions.channel);
+    $("#join-form").submit();
   }
 })
 
@@ -299,6 +303,54 @@ class IatRTCRecord {
 
   start() {
     this.iatRecorder.start()
+
+    // 1. RTC
+    {
+      if (RTCoptions.role === "audience") {
+        client.setClientRole(RTCoptions.role, { level: RTCoptions.audienceLatency });
+        // add event listener to play remote tracks when remote user publishs.
+        client.on("user-published", handleUserPublished);
+        client.on("user-unpublished", handleUserUnpublished);
+      }
+      else {
+        client.setClientRole(RTCoptions.role);
+      }
+
+      // join the channel
+      //      RTCoptions.uid = await client.join(RTCoptions.appid, RTCoptions.channel, RTCoptions.token || null, RTCoptions.uid || null);
+      RTCoptions.uid = client.join(RTCoptions.appid, RTCoptions.channel, RTCoptions.token || null, RTCoptions.uid || null);
+
+
+      if (RTCoptions.role === "host") {
+        // create local audio and video tracks
+        // localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+        localTracks.audioTrack = AgoraRTC.createMicrophoneAudioTrack();
+
+        // localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack(); // 屏蔽相机
+        // play local video track
+        // localTracks.videoTrack.play("local-player");
+        // $("#local-player-name").text(`localTrack(${RTCoptions.uid})`);
+
+
+
+        // 相机
+        {
+          //create the mirror of local player
+          // $("#local-player-mirror-area").show();
+          // var mirrorPlayer = document.getElementById("local-player-mirror-video-track");
+          // //get browser-native object MediaStreamTrack from WebRTC SDK
+          // const msTrack = localTracks.videoTrack.getMediaStreamTrack();
+          // //generate browser-native object MediaStream with above video track
+          // const ms = new MediaStream([msTrack])
+          // mirrorPlayer.srcObject = ms;
+          // mirrorPlayer.play();
+        }
+
+        // publish local tracks to channel
+        client.publish(Object.values(localTracks));
+        console.log("publish success");
+      }
+    }
   }
 
   stop() {
@@ -331,90 +383,12 @@ class IatRTCRecord {
         }
       }
 
-      // 2. RTC
-      {
-        if (RTCoptions.role === "audience") {
-          client.setClientRole(RTCoptions.role, { level: RTCoptions.audienceLatency });
-          // add event listener to play remote tracks when remote user publishs.
-          client.on("user-published", handleUserPublished);
-          client.on("user-unpublished", handleUserUnpublished);
-        }
-        else {
-          client.setClientRole(RTCoptions.role);
-        }
-
-        // join the channel
-        RTCoptions.uid = await client.join(RTCoptions.appid, RTCoptions.channel, RTCoptions.token || null, RTCoptions.uid || null);
-
-        if (RTCoptions.role === "host") {
-          // create local audio and video tracks
-          localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-          // localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack(); // 屏蔽相机
-          // play local video track
-          // localTracks.videoTrack.play("local-player");
-          // $("#local-player-name").text(`localTrack(${RTCoptions.uid})`);
-
-          // TODO 先保存这段代码，等后续搞明白再完善
-          {
-            // 创建音频回调 
-            localTracks.audioTrack.setAudioFrameCallback((buffer) => {
-              for (let channel = 0; channel < buffer.numberOfChannels; channel += 1) {
-                // Float32Array with PCM data
-                const currentChannelData = buffer.getChannelData(channel);
-                // console.log("PCM data in channel", channel, currentChannelData);
-              }
-            }, 2048);
-
-            // 停止音频回调  
-            // localTracks.audioTrack.setAudioFrameCallback(null);
-
-            const bufferAudioRTCoptions = {
-              "cacheOnlineFile": true,
-              "encoderConfig": "",
-              "source": currentChannelData,
-            };
-
-            // Get an AudioBufferSourceNode.
-            // This is the AudioNode to use when we want to play an AudioBuffer
-            var source = audioCtx.createBufferSource(bufferAudioRTCoptions);
-
-            // set the buffer in the AudioBufferSourceNode
-            source.buffer = currentChannelData;
-
-            // connect the AudioBufferSourceNode to the
-            // destination so we can hear the sound
-            source.connect(audioCtx.destination);
-
-            // start the source playing
-            source.start();
-
-            source.onended = () => {
-              console.log("White noise finished.");
-            };
-          }
-
-          // 相机
-          {
-            //create the mirror of local player
-            // $("#local-player-mirror-area").show();
-            // var mirrorPlayer = document.getElementById("local-player-mirror-video-track");
-            // //get browser-native object MediaStreamTrack from WebRTC SDK
-            // const msTrack = localTracks.videoTrack.getMediaStreamTrack();
-            // //generate browser-native object MediaStream with above video track
-            // const ms = new MediaStream([msTrack])
-            // mirrorPlayer.srcObject = ms;
-            // mirrorPlayer.play();
-          }
-
-          // publish local tracks to channel
-          await client.publish(Object.values(localTracks));
-          console.log("publish success");
-        }
-      }
+      console.log("语音转写 Success");
 
       // 3. 录音 TODO
 
     })
+
     //结束
     $('.start-button').click(function () {
       // 1. 语音转写
@@ -458,7 +432,7 @@ class IatRTCRecord {
         remoteUsers = {};
 
         // leave the channel
-        await client.leave();
+        client.leave();
         console.log("client leaves channel success");
 
       }
