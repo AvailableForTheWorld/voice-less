@@ -6,7 +6,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "client:static-server": "http-server --port 8080 src/",
+    "client:static-server": "http-server --port 8181 src/",
     "client:opener-server": "opener http://127.0.0.1:8080",
     "dev": "npm-run-all --parallel client:*",
     "build": "babel src/index.js -o dist/index.js",
