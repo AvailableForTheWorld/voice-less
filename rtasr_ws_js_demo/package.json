@@ -1,0 +1,33 @@
+{
+  "name": "iat-demo",
+  "version": "1.0.0",
+  "description": "iat-demo",
+  "private": true,
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "client:static-server": "http-server --port 8080 src/",
+    "client:opener-server": "opener http://127.0.0.1:8080",
+    "dev": "npm-run-all --parallel client:*",
+    "build": "babel src/index.js -o dist/index.js",
+    "server": "live-server ./src/ --port=9090",
+    "dev1": "vite --open"
+  },
+  "author": "iflytek.com",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "http-server": "^14.1.1",
+    "npm-run-all": "^4.1.5",
+    "opener": "^1.5.2"
+  },
+  "dependencies": {
+    "agora-rtc-sdk-ng": "latest",
+    "babel-cli": "^6.26.0",
+    "live-server": "^1.1.0",
+    "vite": "^3.0.7",
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1"
+  }
+}

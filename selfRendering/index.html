@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>弹出窗口单击确定弹出</title>
+  <link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+  <style>
+    body{margin: 10px;}
+    .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+  </style>
+</head>
+<body>
+ 
+<button id="open"  class="layui-btn layui-btn-primary">弹出窗口</button>
+
+  
+<script src="layui/layui.js"></script>
+<script>
+layui.config({
+  version: '1568076536616' //为了更新 js 缓存，可忽略
+});
+ 
+layui.use(['layer'], function(){
+  var layer = layui.layer; //弹层
+  var $ = layui.$;
+  $("#open").on("click",function(){
+    layer.open({
+        type: 2
+        , title: '弹出窗口'
+        , area: ['600px', '400px']
+        , content: './wantopen/index.html'
+        , btn: ['发起', '连接'] 
+        , yes: function (index, layero) {
+            var iframeWindow = window['layui-layer-iframe' + index];
+            obj = iframeWindow.document.getElementById("saveArtPontItemSetView");
+            //保存按钮单击事件
+            iframeWindow.layui.form.on('submit(save)', function (data) {
+                console.log(data);
+                return false;
+            });
+            obj.click();
+
+        }
+        , cancel : function () {
+           
+        }
+        , btn2: function () {
+            
+            // layer.closeAll();
+        }
+
+
+
+    });
+  });
+  
+
+});
+</script>
+</body>
+</html>        
+        
