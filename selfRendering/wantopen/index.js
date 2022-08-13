@@ -1,5 +1,5 @@
 // create Agora client
-var client = AgoraRTC.createClient({mode: "live", codec: "vp8"});
+var client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
 AgoraRTC.enableLogUpload();
 var localTracks = {
     videoTrack: null,
@@ -97,12 +97,12 @@ async function join() {
     // create Agora client
 
     if (options.role === "audience") {
-        client.setClientRole(options.role, {level: options.audienceLatency});
+        client.setClientRole(options.role, { level: options.audienceLatency });
         // add event listener to play remote tracks when remote user publishs.
         client.on("user-published", handleUserPublished);
         client.on("user-unpublished", handleUserUnpublished);
     }
-    else{
+    else {
         client.setClientRole(options.role);
     }
 
@@ -118,20 +118,20 @@ async function join() {
         $("#local-player-name").text(`localTrack(${options.uid})`);
 
         // 创建音频回调
-        localTracks.audioTrack.setAudioFrameCallback( (buffer) => {
+        localTracks.audioTrack.setAudioFrameCallback((buffer) => {
             for (let channel = 0; channel < buffer.numberOfChannels; channel += 1) {
-              // Float32Array with PCM data
-              const currentChannelData = buffer.getChannelData(channel);              
-              // console.log("PCM data in channel", channel, currentChannelData);
+                // Float32Array with PCM data
+                const currentChannelData = buffer.getChannelData(channel);
+                // console.log("PCM data in channel", channel, currentChannelData);
             }
-          }, 2048);
-          
+        }, 2048);
+
         // 停止音频回调
         // localTracks.audioTrack.setAudioFrameCallback(null);
 
         const bufferAudioOptions = {
-            "cacheOnlineFile":true,
-            "encoderConfig":"",
+            "cacheOnlineFile": true,
+            "encoderConfig": "",
             "source": currentChannelData,
         };
 
@@ -151,7 +151,7 @@ async function join() {
 
         source.onended = () => {
             console.log("White noise finished.");
-          };
+        };
 
         //create the mirror of local player
         $("#local-player-mirror-area").show();
@@ -220,7 +220,7 @@ async function subscribe(user, mediaType) {
       </div>
     `);
         $("#remote-playerlist").append(player);
-        user.videoTrack.play(`player-${uid}`, {fit:"contain"});
+        user.videoTrack.play(`player-${uid}`, { fit: "contain" });
 
         //handling the mirror video
         $(`#player-${uid}-mirror-area`).show();
