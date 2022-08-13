@@ -36,7 +36,9 @@ var RTCoptions = {
   uid: null,
   token: null,
   role: "audience", // host or audience
-  audienceLatency: 2
+  audienceLatency: 2,
+  RTASRappId: '6b7a3d24',
+  RTASRapiKey: '65f9484668d6bd21ca541de7b8fdb001'
 };
 
 recorderWorker.onmessage = function (e) {
@@ -49,8 +51,8 @@ class IatRecorder {
     this.state = 'ing'
 
     //以下信息在控制台-我的应用-实时语音转写 页面获取
-    this.appId = '6b7a3d24'
-    this.apiKey = '65f9484668d6bd21ca541de7b8fdb001'
+    this.appId = RTCoptions.RTASRappId
+    this.apiKey = RTASRapiKey
   }
 
   start() {
