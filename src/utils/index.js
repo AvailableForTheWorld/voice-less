@@ -20,19 +20,6 @@ let AudioContext = window.AudioContext || window.webkitAudioContext
 let notSupportTip = '请试用chrome浏览器且域名为localhost或127.0.0.1测试'
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 
-
-// RTC 配置项
-var RTCoptions = {
-  appid: null,
-  channel: null,
-  uid: null,
-  token: null,
-  role: "audience", // host or audience
-  audienceLatency: 2,
-  RTASRappId: '6b7a3d24',
-  RTASRapiKey: '65f9484668d6bd21ca541de7b8fdb001'
-};
-
 recorderWorker.onmessage = function (e) {
   buffer.push(...e.data.buffer)
 }
@@ -43,8 +30,8 @@ class IatRecorder {
     this.state = 'ing'
 
     //以下信息在控制台-我的应用-实时语音转写 页面获取
-    this.appId = RTCoptions.RTASRappId
-    this.apiKey = RTCoptions.RTASRapiKey
+    this.appId = import.meta.env.VITE_ASR_API_ID
+    this.apiKey = import.meta.env.VITE_ASR_API_KEY
   }
 
   start() {
