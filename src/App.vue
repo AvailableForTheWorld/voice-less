@@ -9,13 +9,14 @@
 <script lang="ts" setup>
 import type { AppContext } from "@netless/window-manager";
 import type { FastboardApp } from "@netless/fastboard-core";
-import { computed, inject, onMounted, onUpdated, reactive, ref, watchEffect } from "vue";
+import { computed, inject, onMounted, onUpdated, reactive, ref, watchEffect,getCurrentInstance } from "vue";
 import MainContainer from '@/views/main/index.vue'
 import FooterContainer from '@/views/footer/index.vue'
 import HeaderContainer from '@/views/header/index.vue'
 
 // console.log("fasterboard",window.fastboard);
-
+const vm = getCurrentInstance();
+window.vm = vm;
 const context = window.context;
 if (!context) throw new Error("must call provide('context') before mount App");
 

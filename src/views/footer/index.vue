@@ -16,11 +16,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineEmits } from 'vue'
+import { ref, defineEmits,getCurrentInstance } from 'vue'
 import { iatrtcrecord } from '@/utils/index.js'
 
 const input = ref('')
 const emit = defineEmits(['push-message'])
+
 
 const handleInputClick = () => {
   emit('push-message', {
@@ -30,6 +31,15 @@ const handleInputClick = () => {
   })
   input.value = ''
 }
+
+const emitMessage = (data) => {
+  emit('push-message', {
+    content: data,
+    id: window.context.getRoom().observerId,
+    date: new Date().getTime(),
+  })
+}
+window.emitMessage = emitMessage;
 
 const handleRecordStart = () => {
   iatrtcrecord.start()

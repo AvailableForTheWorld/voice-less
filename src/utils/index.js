@@ -308,11 +308,10 @@ class IatRTCRecord {
   }
   setResult(data) {
     let rtasrResult = []
-    var currentText = $('#result_output').html()
     rtasrResult[data.seg_id] = data
     rtasrResult.forEach(i => {
-      let str = "实时转写"
-      str += (i.cn.st.type == 0) ? "【最终】识别结果：" : "【中间】识别结果："
+    if(i.cn.st.type == 0){
+      let str = ""
       i.cn.st.rt.forEach(j => {
         j.ws.forEach(k => {
           k.cw.forEach(l => {
@@ -320,13 +319,8 @@ class IatRTCRecord {
           })
         })
       })
-      if (currentText.length == 0) {
-        $('#result_output').html(str)
-      } else {
-        $('#result_output').html(currentText + "<br>" + str)
-      }
-      var ele = document.getElementById('result_output');
-      ele.scrollTop = ele.scrollHeight;
+      window.emitMessage(str);
+    }
     })
   }
 
