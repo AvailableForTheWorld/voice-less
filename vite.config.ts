@@ -13,6 +13,11 @@ export default defineConfig(({ mode }) => ({
     script.src = './src/utils/index.js';
     document.body.appendChild(script);
   },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname,'./src')
+    }
+  },
   plugins: [
     vue(),
     AutoImport({
