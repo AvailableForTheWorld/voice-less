@@ -11,13 +11,15 @@
   ],
   "scripts": {
     "start": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "client:static-server": "http-server --port 8181 src/"
   },
   "engines": {
     "npm": "^8.0.0"
   },
   "dependencies": {
     "element-plus": "^2.2.12",
+    "pinia": "^2.0.17",
     "sass": "^1.54.2",
     "unplugin-auto-import": "^0.10.3",
     "unplugin-vue-components": "^0.22.0",
