@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "start": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "client:static-server": "http-server --port 8181 src/"
   },
   "engines": {
     "npm": "^8.0.0"

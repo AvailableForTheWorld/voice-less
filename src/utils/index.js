@@ -11,35 +11,14 @@
  * 
  */
 
-// create Agora client
-var client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
-
 // 音频转码worker
-let recorderWorker = new Worker('./transformpcm.worker.js')
+let recorderWorker = new Worker('./src/utils/transformpcm.worker.js')
 
 // 记录处理的缓存音频
 let buffer = []
 let AudioContext = window.AudioContext || window.webkitAudioContext
 let notSupportTip = '请试用chrome浏览器且域名为localhost或127.0.0.1测试'
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
-
-// RTC 对象
-var localTracks = {
-  videoTrack: null,
-  audioTrack: null
-};
-
-// RTC 配置项
-var RTCoptions = {
-  appid: null,
-  channel: null,
-  uid: null,
-  token: null,
-  role: "audience", // host or audience
-  audienceLatency: 2,
-  RTASRappId: '6b7a3d24',
-  RTASRapiKey: '65f9484668d6bd21ca541de7b8fdb001'
-};
 
 recorderWorker.onmessage = function (e) {
   buffer.push(...e.data.buffer)
@@ -51,8 +30,8 @@ class IatRecorder {
     this.state = 'ing'
 
     //以下信息在控制台-我的应用-实时语音转写 页面获取
-    this.appId = RTCoptions.RTASRappId
-    this.apiKey = RTASRapiKey
+    this.appId = import.meta.env.VITE_ASR_API_ID
+    this.apiKey = import.meta.env.VITE_ASR_API_KEY
   }
 
   start() {
@@ -224,47 +203,6 @@ class IatRecorder {
   }
 }
 
-// RTC 用户处理
-function handleUserPublished(user, mediaType) {
-  const id = user.uid;
-  remoteUsers[id] = user;
-  subscribe(user, mediaType);
-}
-
-function handleUserUnpublished(user, mediaType) {
-  if (mediaType === 'video') {
-    const id = user.uid;
-    delete remoteUsers[id];
-    $(`#player-wrapper-${id}`).remove();
-  }
-}
-
-// RTC Token
-// the demo can auto join channel with params in url
-$(() => {
-  var urlParams = new URL(location.href).searchParams;
-  // RTCoptions.appid = urlParams.get("appid");
-  // RTCoptions.channel = urlParams.get("channel");
-  // RTCoptions.token = urlParams.get("token");
-  // RTCoptions.uid = urlParams.get("uid");
-
-  // 写死
-  RTCoptions.appid = '4ae0df8d0d1741e6b54381adc43bceea';
-  RTCoptions.channel = 'RTC1';
-  RTCoptions.token = '0064ae0df8d0d1741e6b54381adc43bceeaIAAD3+PKAZEOWad0EcZH2/d9/ceFB6ewBVtY87T8gCquD6WCf6EAAAAAEACxI7THhl/4YgEAAQCFX/hi';
-  RTCoptions.uid = 2;
-  RTCoptions.role = "host";
-
-  if (RTCoptions.appid && RTCoptions.channel) {
-    $("#uid").val(RTCoptions.uid);
-    $("#appid").val(RTCoptions.appid);
-    $("#token").val(RTCoptions.token);
-    $("#channel").val(RTCoptions.channel);
-    $("#join-form").submit();
-  }
-})
-
-
 class IatRTCRecord {
   constructor() {
     var iatRecorder = new IatRecorder({
@@ -305,54 +243,6 @@ class IatRTCRecord {
 
   start() {
     this.iatRecorder.start()
-
-    // 1. RTC
-    {
-      if (RTCoptions.role === "audience") {
-        client.setClientRole(RTCoptions.role, { level: RTCoptions.audienceLatency });
-        // add event listener to play remote tracks when remote user publishs.
-        client.on("user-published", handleUserPublished);
-        client.on("user-unpublished", handleUserUnpublished);
-      }
-      else {
-        client.setClientRole(RTCoptions.role);
-      }
-
-      // join the channel
-      //      RTCoptions.uid = await client.join(RTCoptions.appid, RTCoptions.channel, RTCoptions.token || null, RTCoptions.uid || null);
-      RTCoptions.uid = client.join(RTCoptions.appid, RTCoptions.channel, RTCoptions.token || null, RTCoptions.uid || null);
-
-
-      if (RTCoptions.role === "host") {
-        // create local audio and video tracks
-        // localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-        localTracks.audioTrack = AgoraRTC.createMicrophoneAudioTrack();
-
-        // localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack(); // 屏蔽相机
-        // play local video track
-        // localTracks.videoTrack.play("local-player");
-        // $("#local-player-name").text(`localTrack(${RTCoptions.uid})`);
-
-
-
-        // 相机
-        {
-          //create the mirror of local player
-          // $("#local-player-mirror-area").show();
-          // var mirrorPlayer = document.getElementById("local-player-mirror-video-track");
-          // //get browser-native object MediaStreamTrack from WebRTC SDK
-          // const msTrack = localTracks.videoTrack.getMediaStreamTrack();
-          // //generate browser-native object MediaStream with above video track
-          // const ms = new MediaStream([msTrack])
-          // mirrorPlayer.srcObject = ms;
-          // mirrorPlayer.play();
-        }
-
-        // publish local tracks to channel
-        client.publish(Object.values(localTracks));
-        console.log("publish success");
-      }
-    }
   }
 
   stop() {
@@ -375,24 +265,21 @@ class IatRTCRecord {
   init() {
     let self = this
     //开始
-    $('#taste_button').click(function () {
-      // 1. 语音转写
-      {
-        if (navigator.getUserMedia && AudioContext && recorderWorker) {
-          self.start()
-        } else {
-          alert(notSupportTip)
-        }
-      }
-
-      console.log("语音转写 Success");
-
-      // 3. 录音 TODO
-
-    })
+    // $('#record_start_button').click(function () {
+    //   console.log("语音转写");
+    //   debugger;
+    //   {
+    //     if (navigator.getUserMedia && AudioContext && recorderWorker) {
+    //       self.start()
+    //     } else {
+    //       alert(notSupportTip)
+    //     }
+    //   }
+    //   console.log("语音转写 Success");
+    // })
 
     //结束
-    $('.start-button').click(function () {
+    $('#record_end_button').click(function () {
       // 1. 语音转写
       {
         if ($(this).text() === self.text.start && !$(this).prop('disabled')) {
@@ -417,36 +304,14 @@ class IatRTCRecord {
           //console.log("按钮非禁用状态，正常停止" + $(this).prop('disabled'))
         }
       }
-
-      // 2. RTC
-      {
-        for (trackName in localTracks) {
-          var track = localTracks[trackName];
-          if (track) {
-            // track.setAudioFrameCallback(null); // 录音回调，暂时注掉
-            track.stop();
-            track.close();
-            localTracks[trackName] = undefined;
-          }
-        }
-
-        // remove remote users and player views
-        remoteUsers = {};
-
-        // leave the channel
-        client.leave();
-        console.log("client leaves channel success");
-
-      }
     })
   }
   setResult(data) {
     let rtasrResult = []
-    var currentText = $('#result_output').html()
     rtasrResult[data.seg_id] = data
     rtasrResult.forEach(i => {
-      let str = "实时转写"
-      str += (i.cn.st.type == 0) ? "【最终】识别结果：" : "【中间】识别结果："
+    if(i.cn.st.type == 0){
+      let str = ""
       i.cn.st.rt.forEach(j => {
         j.ws.forEach(k => {
           k.cw.forEach(l => {
@@ -454,13 +319,8 @@ class IatRTCRecord {
           })
         })
       })
-      if (currentText.length == 0) {
-        $('#result_output').html(str)
-      } else {
-        $('#result_output').html(currentText + "<br>" + str)
-      }
-      var ele = document.getElementById('result_output');
-      ele.scrollTop = ele.scrollHeight;
+      window.emitMessage(str);
+    }
     })
   }
 
@@ -488,5 +348,6 @@ class IatRTCRecord {
     }, 1000)
   }
 }
-var iatrtcrecord = new IatRTCRecord()
+
+export const iatrtcrecord = new IatRTCRecord()
 iatrtcrecord.init()

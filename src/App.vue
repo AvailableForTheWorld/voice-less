@@ -9,21 +9,17 @@
 <script lang="ts" setup>
 import type { AppContext } from "@netless/window-manager";
 import type { FastboardApp } from "@netless/fastboard-core";
-import { computed, inject, onMounted, onUpdated, reactive, ref, watchEffect } from "vue";
-import MainContainer from './views/main/index.vue'
-import FooterContainer from './views/footer/index.vue'
-import HeaderContainer from './views/header/index.vue'
+import { computed, inject, onMounted, onUpdated, reactive, ref, watchEffect,getCurrentInstance } from "vue";
+import MainContainer from '@/views/main/index.vue'
+import FooterContainer from '@/views/footer/index.vue'
+import HeaderContainer from '@/views/header/index.vue'
 
 // console.log("fasterboard",window.fastboard);
-
+const vm = getCurrentInstance();
+window.vm = vm;
 const context = window.context;
 if (!context) throw new Error("must call provide('context') before mount App");
 
-// const insertMedia : () => void = async () => {
-//   const fastborad:FastboardApp = window.fastboard;
-//   const mid = await fastboard.insertMedia('测试','https://lanhu-cdn.oss-cn-shenzhen.aliyuncs.com/video/ts.mp4');
-//   console.log("mid: ",mid)
-// }
 
 // 头像颜色选择
 const color = ['#a8d8ea','#aa96da','#fcbad3','#ffffd2','#ffc7c7','#ffe2e2','#f6f6f6','#8785a2']
