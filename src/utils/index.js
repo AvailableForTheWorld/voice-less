@@ -279,7 +279,8 @@ class IatRTCRecord {
     let self = this
     //开始
     $('#taste_button').click(function () {
-      // 1. 语音转写
+      console.log("语音转写");
+
       {
         if (navigator.getUserMedia && AudioContext && recorderWorker) {
           self.start()

@@ -7,6 +7,12 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 export default defineConfig(({ mode }) => ({
+  mounted: function() {
+    let script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = './src/utils/index.js';
+    document.body.appendChild(script);
+  },
   plugins: [
     vue(),
     AutoImport({
