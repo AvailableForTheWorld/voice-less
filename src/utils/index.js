@@ -265,18 +265,18 @@ class IatRTCRecord {
   init() {
     let self = this
     //开始
-    $('#record_start_button').click(function () {
-      console.log("语音转写");
-      debugger;
-      {
-        if (navigator.getUserMedia && AudioContext && recorderWorker) {
-          self.start()
-        } else {
-          alert(notSupportTip)
-        }
-      }
-      console.log("语音转写 Success");
-    })
+    // $('#record_start_button').click(function () {
+    //   console.log("语音转写");
+    //   debugger;
+    //   {
+    //     if (navigator.getUserMedia && AudioContext && recorderWorker) {
+    //       self.start()
+    //     } else {
+    //       alert(notSupportTip)
+    //     }
+    //   }
+    //   console.log("语音转写 Success");
+    // })
 
     //结束
     $('#record_end_button').click(function () {
