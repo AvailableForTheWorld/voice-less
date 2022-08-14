@@ -1,6 +1,6 @@
 import { register, apps } from "@netless/fastboard";
 import App from "../src/index";
-import logo from "../src/logo.svg";
+import logo from "../src/audio.svg";
 
 export const registering = register({ kind: App.kind, src: App });
 apps.clear();
