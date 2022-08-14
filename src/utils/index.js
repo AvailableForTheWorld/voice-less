@@ -278,9 +278,9 @@ class IatRTCRecord {
   init() {
     let self = this
     //开始
-    $('#taste_button').click(function () {
+    $('#record_start_button').click(function () {
       console.log("语音转写");
-
+      debugger;
       {
         if (navigator.getUserMedia && AudioContext && recorderWorker) {
           self.start()
@@ -292,7 +292,7 @@ class IatRTCRecord {
     })
 
     //结束
-    $('.start-button').click(function () {
+    $('#record_end_button').click(function () {
       // 1. 语音转写
       {
         if ($(this).text() === self.text.start && !$(this).prop('disabled')) {
@@ -368,5 +368,5 @@ class IatRTCRecord {
   }
 }
 
-var iatrtcrecord = new IatRTCRecord()
+export const iatrtcrecord = new IatRTCRecord()
 iatrtcrecord.init()

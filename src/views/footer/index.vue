@@ -2,12 +2,13 @@
   <div class="footer-container">
     <div>
       <el-input class="input-container" v-model="input" placeholder="Please input" type="textarea" rows="1" />
-      <div class="taste-content">
-        <button class="taste-button ready-button" id="taste_button">
-          <el-icon class="recording">
-            <img src="../../assets/icons/recording.svg" />
-          </el-icon>
-        </button>
+      <div class=""  @click="handleRecordStart">
+        <el-icon class="recording">
+          <img src="../../assets/icons/recording.svg" />
+        </el-icon>
+      </div>
+      <div  @click="handleRecordEnd">
+        222
       </div>
       <el-button type="primary" @click="handleInputClick">发送</el-button>
     </div>
@@ -16,6 +17,8 @@
 
 <script lang="ts" setup>
 import { ref, defineEmits } from 'vue'
+import { iatrtcrecord } from '@/utils/index.js'
+
 const input = ref('')
 const emit = defineEmits(['push-message'])
 
@@ -28,6 +31,13 @@ const handleInputClick = () => {
   input.value = ''
 }
 
+const handleRecordStart = () => {
+  iatrtcrecord.start()
+}
+
+const handleRecordEnd = ()=> {
+  iatrtcrecord.stop()
+}
 
 </script>
 
