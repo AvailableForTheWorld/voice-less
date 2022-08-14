@@ -11,9 +11,6 @@
  * 
  */
 
-// create Agora client
-var client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
-
 // 音频转码worker
 let recorderWorker = new Worker('./transformpcm.worker.js')
 

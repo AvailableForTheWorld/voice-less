@@ -47,5 +47,7 @@ export default defineConfig(({ mode }) => ({
   clearScreen: false,
   server: {
     open: true,
+    hmr: true,
+    usePolling: true
   },
 }));
