@@ -95,7 +95,19 @@ onMounted(()=>{
   }
   checkboxStore.setSum(sum);
   checkboxStore.setCheckedCnt(cnt);
+  // window.context.addMagixEventListener('changeAllChecked',({payload})=>{
+  //   // changeAllChecked(payload.checked)
+  // })
 })
+
+const changeAllChecked = (val) => {
+  console.log('props.list',props.list)
+  debugger;
+  const list = props.list;
+  for(let key in list){
+    list[key].isChecked = val;
+  }
+}
 
 const getDate = (date)=>{
   const oldVal = new Date(date), newVal = new Date();

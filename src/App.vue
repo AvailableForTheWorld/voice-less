@@ -53,12 +53,13 @@ const checkMessage = (val) => {
 }
 
 const handleChangeAllChecked = (val) => {
-  const arr = storage.state.arr.map((item)=>{
-    const changeItem = item;
-    changeItem.isChecked = val;
-    return changeItem;
+  const storeArr = {...storage.state.arr};
+  console.log('Object.keys(storeArr)',Object.keys(storeArr))
+  Object.keys(storeArr).forEach((key)=>{
+    debugger;
+    storeArr[key].isChecked = val;
   })
-  storage.setState({arr});
+  storage.setState({storeArr});
 }
 
 const messList = ref(storage.state.arr);
