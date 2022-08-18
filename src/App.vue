@@ -24,7 +24,6 @@ if (!context) throw new Error("must call provide('context') before mount App");
 // 头像颜色选择
 const color = ['#a8d8ea','#aa96da','#fcbad3','#ffffd2','#ffc7c7','#ffe2e2','#f6f6f6','#8785a2']
 const storage = context.createStorage("mess-list", { arr: [],info:{} });
-
 const pushMessage = (item) => {
   const arr1 = storage.state.arr;
   const info = storage.state.info;
@@ -48,15 +47,9 @@ const delMessage = (pos) => {
 }
 
 const checkMessage = (val) => {
-  const arr = storage.state.arr.map((item,index)=>{
-    if(index===val.index){
-      const changeItem = val;
-      changeItem.isChecked = !changeItem.isChecked;
-      return changeItem;
-    }
-    return item;
-  })
-  storage.setState({arr})
+  console.log("storage.state.arr",storage.state.arr)
+  const storeArr = {...storage.state.arr};
+  storage.setState({arr:storeArr})
 }
 
 const handleChangeAllChecked = (val) => {

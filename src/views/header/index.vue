@@ -2,7 +2,7 @@
   <div class="header-container">
     <div class="all-in">
       <div class="checkbox">
-        <input type="checkbox" @change="changeAll" />
+        <input v-model="isAllChecked" type="checkbox" @change="changeAll" />
       </div>
       <label>全选</label>
     </div>
@@ -11,20 +11,34 @@
 
 <script lang="ts" setup>
 
-import { ref, defineEmits } from 'vue'
+import { ref, defineEmits, onMounted } from 'vue'
 import { useCheckBox } from '../../stores/index';
 const checkboxStore = useCheckBox();
+const isAllChecked = ref(false)
+
 checkboxStore.$subscribe((mutation,state)=>{
   console.log("mutation:",mutation,"state",state)
-})
-let isAllChecked : boolean = false
+  if(state.sum === state.checkedCnt){
+    isAllChecked.value = true;
+  }
+  else {
+    isAllChecked.value = false;
+  }
+  window.context.dispatchMagixEvent('changeSumChecked',{checked: isAllChecked.value})
+},{immediate:true})
 
 const emit = defineEmits(['changeAllChecked'])
 
 const changeAll = () => {
-  isAllChecked = ! isAllChecked;
-  emit('changeAllChecked',isAllChecked);
+  isAllChecked.value = ! isAllChecked.value;
+  emit('changeAllChecked',isAllChecked.value);
 }
+
+onMounted(()=>{
+    window.context.addMagixEventListener('changeSumChecked',({payload})=>{
+    isAllChecked.value = payload.checked;
+  })
+})
 
 </script>
 
