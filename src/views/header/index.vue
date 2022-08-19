@@ -17,7 +17,6 @@ const checkboxStore = useCheckBox();
 const isAllChecked = ref(false)
 
 checkboxStore.$subscribe((mutation,state)=>{
-  console.log("mutation:",mutation,"state",state)
   if(state.sum === state.checkedCnt){
     isAllChecked.value = true;
   }
@@ -25,17 +24,15 @@ checkboxStore.$subscribe((mutation,state)=>{
     isAllChecked.value = false;
   }
   window.context.dispatchMagixEvent('changeSumChecked',{checked: isAllChecked.value})
-},{immediate:true})
+})
 
 const emit = defineEmits(['changeAllChecked'])
 
 const changeAll = () => {
-  console.log("isAllchecked",isAllChecked.value)
-  debugger;
   emit('changeAllChecked',isAllChecked.value);
+  checkboxStore.setFullChecked(isAllChecked.value)
   // window.context.dispatchMagixEvent('changeAllChecked',{checked: isAllChecked.value})
 }
-
 
 
 onMounted(()=>{

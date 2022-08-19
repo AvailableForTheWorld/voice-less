@@ -101,8 +101,6 @@ onMounted(()=>{
 })
 
 const changeAllChecked = (val) => {
-  console.log('props.list',props.list)
-  debugger;
   const list = props.list;
   for(let key in list){
     list[key].isChecked = val;

@@ -14,7 +14,7 @@ import MainContainer from '@/views/main/index.vue'
 import FooterContainer from '@/views/footer/index.vue'
 import HeaderContainer from '@/views/header/index.vue'
 
-// console.log("fasterboard",window.fastboard);
+
 const vm = getCurrentInstance();
 window.vm = vm;
 const context = window.context;
@@ -47,19 +47,16 @@ const delMessage = (pos) => {
 }
 
 const checkMessage = (val) => {
-  console.log("storage.state.arr",storage.state.arr)
   const storeArr = {...storage.state.arr};
   storage.setState({arr:storeArr})
 }
 
 const handleChangeAllChecked = (val) => {
   const storeArr = {...storage.state.arr};
-  console.log('Object.keys(storeArr)',Object.keys(storeArr))
   Object.keys(storeArr).forEach((key)=>{
-    debugger;
     storeArr[key].isChecked = val;
   })
-  storage.setState({storeArr});
+  storage.setState({arr:storeArr});
 }
 
 const messList = ref(storage.state.arr);
@@ -86,11 +83,7 @@ onMounted(() =>{
 );
 
 
-watchEffect(() => {
-  if(messList.value){
-    console.log('messlist',messList.value)
-  }
-});
+
 </script>
 <style lang="scss">
 </style>

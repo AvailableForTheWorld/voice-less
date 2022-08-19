@@ -14,6 +14,12 @@ export const useCheckBox = defineStore('checkbox',{
     actions: {
         setFullChecked(boolValue:boolean){
             this.isFullChecked = boolValue;
+            if(boolValue){
+                this.checkedCnt = this.sum;
+            }
+            else {
+                this.checkedCnt = 0;
+            }
         },
         setCheckedCnt(val : number) {
             this.checkedCnt = val;
