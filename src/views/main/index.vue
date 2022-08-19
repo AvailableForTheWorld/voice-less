@@ -53,7 +53,8 @@ const buttons = [
 const isChecked = ref(false)
 
 const judgeAvatarDuplicated = (item,index) => {
-  if(Number(index) && props.list[index-1].id == item.id){
+  debugger;
+  if(Number(index) && props.list[index-1]?.id == item.id){
     return false;
   }
   return true;
