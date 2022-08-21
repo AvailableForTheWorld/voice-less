@@ -21,6 +21,7 @@
 <script lang="ts" setup>
 import { ref, defineEmits,getCurrentInstance, onMounted } from 'vue'
 import { iatrtcrecord } from '@/utils/index.js'
+import { ElMessage } from 'element-plus'
 
 const input = ref('')
 const emit = defineEmits(['push-message','output'])
@@ -48,12 +49,19 @@ const handleRecordStart = () => {
   iatrtcrecord.start()
   isRecording.value = true;
   window.context.dispatchMagixEvent('changeRecordingShow',{isRecording:true})
+  ElMessage({
+    message: '正在录音，点击底部红色按钮取消录音',
+    type: 'success',
+  })
 }
 
 const handleRecordEnd = ()=> {
   iatrtcrecord.stop()
   isRecording.value = false;
   window.context.dispatchMagixEvent('changeRecordingShow',{isRecording:false})
+  ElMessage({
+    message: '已结束录音',
+  })
 }
 
 const handleOutPut = () => {
