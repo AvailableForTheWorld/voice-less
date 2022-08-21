@@ -13,7 +13,8 @@ import { computed, inject, onMounted, onUpdated, reactive, ref, watchEffect,getC
 import MainContainer from '@/views/main/index.vue'
 import FooterContainer from '@/views/footer/index.vue'
 import HeaderContainer from '@/views/header/index.vue'
-
+import { useCheckBox } from './stores/index';
+const checkboxStore = useCheckBox();
 
 const vm = getCurrentInstance();
 window.vm = vm;
@@ -25,7 +26,7 @@ if (!context) throw new Error("must call provide('context') before mount App");
 const color = ['#a8d8ea','#aa96da','#fcbad3','#ffffd2','#ffc7c7','#ffe2e2','#f6f6f6','#8785a2']
 const storage = context.createStorage("mess-list", { arr: [],info:{} });
 const pushMessage = (item) => {
-  console.log("storage.state.arr",storage.state.arr)
+  checkboxStore.setSum(checkboxStore.Sum + 1)
   const arr1 = storage.state.arr;
   const info = storage.state.info;
   let cnt = storage.state.info.cnt;
@@ -42,9 +43,29 @@ const pushMessage = (item) => {
 }
 
 const delMessage = (pos) => {
-  let arr = storage.state.arr.filter((item,index)=>{
-    return index !== pos
-  });
+  let arr ;
+  if(checkboxStore.isCheckboxShow){
+    let cnt = 0;
+    arr = storage.state.arr.filter((item)=>{
+      if(!item.isChecked){
+        ++cnt;
+        return true;
+      }
+      return false;
+    })
+    checkboxStore.setFullChecked(false);
+    checkboxStore.setSum(cnt);
+    checkboxStore.setCheckedCnt(0);
+    if(cnt===0){
+      checkboxStore.setCheckboxShow(false)
+      window.context.dispatchMagixEvent('changeCheckboxShow',{isCheckboxShow:false})
+    }
+  }
+  else {
+    arr = storage.state.arr.filter((item,index)=>{
+      return index !== pos
+    });
+  }
   storage.setState({arr})
 }
 

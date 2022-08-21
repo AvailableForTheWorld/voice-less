@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">   
     <div class="user-message" v-for="(item,index) in list" >
-      <div class="checkbox-wrapper">
+      <div class="checkbox-wrapper" v-show="checkboxStore.isCheckboxShow">
         <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item,index)"/>
       </div>
       <el-avatar class="user-avatar" :size="50" :style="{backgroundColor:info[item.id]?.color,visibility:judgeAvatarDuplicated(item,index)?'visible':'hidden'}">{{item.id}}</el-avatar>
@@ -50,7 +50,6 @@ const buttons = [
 ] as const
 
 const isChecked = ref(false)
-
 const judgeAvatarDuplicated = (item,index) => {
   if(index && props.list[index-1]?.id == item.id){
     return false;
@@ -81,6 +80,10 @@ const handleCardOptionsClick = (text,index) => {
   if(text === '删除'){
     emit('del-message',index);
   }
+  if(text === '多选'){
+    checkboxStore.setCheckboxShow(true);
+    window.context.dispatchMagixEvent('changeCheckboxShow',{isCheckboxShow:true})
+  }
 }
 
 onMounted(()=>{
@@ -94,6 +97,9 @@ onMounted(()=>{
   }
   checkboxStore.setSum(sum);
   checkboxStore.setCheckedCnt(cnt);
+  window.context.addMagixEventListener('changeCheckboxShow',({payload})=>{
+    checkboxStore.isCheckboxShow = payload.isCheckboxShow;
+  })
 })
 
 
