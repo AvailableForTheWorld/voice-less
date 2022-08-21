@@ -1,7 +1,7 @@
 <template>
   <div class="footer-container">
     <div>
-      <el-input class="input-container" v-model="input" placeholder="Please input" type="textarea" rows="1" />
+      <el-input class="input-container" v-model="input" placeholder="Please input" type="textarea" rows="1" @focus="resizeElInput" @blur="restoreElInput"/>
       <div class="cursor"  @click="handleRecordStart">
         <el-icon class="recording">
           <img src="../../assets/icons/recording.svg" />
@@ -56,6 +56,14 @@ const handleOutPut = () => {
   emit('output')
 }
 
+const resizeElInput = (e) => {
+  e.preventDefault();
+  e.target.rows = 10;
+}
+const restoreElInput = (e) => {
+  e.preventDefault();
+  e.target.rows = 1;
+}
 </script>
 
 <style lang="scss">
@@ -66,7 +74,11 @@ const handleOutPut = () => {
   position: fixed;
   bottom: 0;
   width: 100%;
-
+  .input-container {
+    .el-textarea__inner {
+      resize: none;
+    }
+  }
   div {
     display: flex;
 
