@@ -1,9 +1,8 @@
 <template>
-  <div class="main-container">
-      
+  <div class="main-container">   
     <div class="user-message" v-for="(item,index) in list" >
       <div class="checkbox-wrapper">
-        <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item)"/>
+        <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item,index)"/>
       </div>
       <el-avatar class="user-avatar" :size="50" :style="{backgroundColor:info[item.id]?.color,visibility:judgeAvatarDuplicated(item,index)?'visible':'hidden'}">{{item.id}}</el-avatar>
       <el-popover
@@ -53,7 +52,7 @@ const buttons = [
 const isChecked = ref(false)
 
 const judgeAvatarDuplicated = (item,index) => {
-  if(index && props.list[index-1].id == item.id){
+  if(index && props.list[index-1]?.id == item.id){
     return false;
   }
   return true;
@@ -61,13 +60,13 @@ const judgeAvatarDuplicated = (item,index) => {
 
 const isCardHover = ref(-1)
 
-const handleCheckBox = (item) => {
+const handleCheckBox = (item,index) => {
   if(item.isChecked){
-    checkboxStore.cntMinus();
-  }else{
     checkboxStore.cntPlus();
+  }else{
+    checkboxStore.cntMinus();
   }
-  emit('check-message',item)
+  emit('check-message',index)
 }
 
 const handleCardHover = (index)=> {
@@ -85,13 +84,18 @@ const handleCardOptionsClick = (text,index) => {
 }
 
 onMounted(()=>{
-  const cnt = props.list.reduce((total,item)=>{
-    if(item.isChecked){
-      total += 1;
+  const list = props.list
+  let cnt = 0,sum=0;
+  for(let item in list){
+    ++sum;
+    if(list[item].isChecked){
+      ++cnt;
     }
-  },0)
+  }
+  checkboxStore.setSum(sum);
   checkboxStore.setCheckedCnt(cnt);
 })
+
 
 const getDate = (date)=>{
   const oldVal = new Date(date), newVal = new Date();
