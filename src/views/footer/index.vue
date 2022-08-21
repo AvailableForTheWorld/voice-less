@@ -2,13 +2,15 @@
   <div class="footer-container">
     <div>
       <el-input class="input-container" v-model="input" placeholder="Please input" type="textarea" rows="1" />
-      <div class=""  @click="handleRecordStart">
+      <div class="cursor"  @click="handleRecordStart">
         <el-icon class="recording">
           <img src="../../assets/icons/recording.svg" />
         </el-icon>
       </div>
-      <div  @click="handleRecordEnd">
-        222
+      <div class="cursor" @click="handleRecordEnd">
+        <el-icon class="recording">
+          <img src="../../assets/icons/cancel-recording.svg" />
+        </el-icon>
       </div>
       <el-button type="primary" @click="handleInputClick">发送</el-button>
       <el-button type="warning" @click="handleOutPut">导出</el-button>
@@ -57,6 +59,9 @@ const handleOutPut = () => {
 </script>
 
 <style lang="scss">
+.cursor {
+  cursor: pointer;
+}
 .footer-container {
   position: fixed;
   bottom: 0;
