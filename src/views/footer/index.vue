@@ -11,6 +11,7 @@
         222
       </div>
       <el-button type="primary" @click="handleInputClick">发送</el-button>
+      <el-button type="warning" @click="handleOutPut">导出</el-button>
     </div>
   </div>
 </template>
@@ -20,7 +21,7 @@ import { ref, defineEmits,getCurrentInstance } from 'vue'
 import { iatrtcrecord } from '@/utils/index.js'
 
 const input = ref('')
-const emit = defineEmits(['push-message'])
+const emit = defineEmits(['push-message','output'])
 
 
 const handleInputClick = () => {
@@ -47,6 +48,10 @@ const handleRecordStart = () => {
 
 const handleRecordEnd = ()=> {
   iatrtcrecord.stop()
+}
+
+const handleOutPut = () => {
+  emit('output')
 }
 
 </script>

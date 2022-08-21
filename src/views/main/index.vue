@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">   
+  <div class="main-container">
     <div class="user-message" v-for="(item,index) in list" >
       <div class="checkbox-wrapper" v-show="checkboxStore.isCheckboxShow">
         <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item,index)"/>
@@ -45,8 +45,9 @@ const props = defineProps(['list','info'])
 const emit = defineEmits(['del-message','check-message'])
 
 const buttons = [
-  { type: 'primary', text: '删除' },
+  { type: 'danger', text: '删除' },
   { type: 'success', text: '多选' },
+  { type: 'primary', text: '复制'},
 ] as const
 
 const isChecked = ref(false)
@@ -80,9 +81,25 @@ const handleCardOptionsClick = (text,index) => {
   if(text === '删除'){
     emit('del-message',index);
   }
-  if(text === '多选'){
+  else if(text === '多选'){
     checkboxStore.setCheckboxShow(true);
     window.context.dispatchMagixEvent('changeCheckboxShow',{isCheckboxShow:true})
+  }
+  else if(text === '复制'){
+    let str = ''
+    if(checkboxStore.isCheckboxShow){
+      let arr = props.list.map((item)=>{
+        if(item.isChecked){
+          return item.content;
+        }
+        return null
+      }).filter( item => item )
+      str = arr.join('\n');
+    }
+    else {
+      str += props.list[index].content;
+    }
+    navigator.clipboard.writeText(str)
   }
 }
 
