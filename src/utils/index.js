@@ -1,15 +1,3 @@
-/**
- * Created by iflytek on 2019/11/12.
- *
- * 实时转写调用demo
- * 此demo只是一个简单的调用示例，不适合用到实际生产环境中
- *  
- * 实时语音转写 WebAPI 接口调用示例 接口文档（必看）：https://www.xfyun.cn/doc/asr/rtasr/API.html
- * 错误码链接：
- * https://www.xfyun.cn/doc/asr/rtasr/API.html
- * https://www.xfyun.cn/document/error-code （code返回错误码时必看）
- * 
- */
 
 // 音频转码worker
 let recorderWorker = new Worker('./src/utils/transformpcm.worker.js')
@@ -143,7 +131,6 @@ class IatRecorder {
     this.ws.onclose = (e) => {
       this.stop()
       console.log("关闭连接ws.onclose");
-      $('.start-button').attr('disabled', false);
       this.config.onClose && this.config.onClose(e)
     }
   }
@@ -218,27 +205,8 @@ class IatRTCRecord {
       onMessage: (message) => {
         this.setResult(JSON.parse(message))
       },
-      onStart: () => {
-        $('hr').addClass('hr')
-        var dialect = $('.dialect-select').find('option:selected').text()
-        $('.taste-content').css('display', 'none')
-        $('.start-taste').addClass('flex-display-1')
-        $('.dialect-select').css('display', 'none')
-        $('.start-button').text('结束转写')
-        $('.time-box').addClass('flex-display-1')
-        $('.dialect').text(dialect).css('display', 'inline-block')
-        this.counterDown($('.used-time'))
-      }
     })
     this.iatRecorder = iatRecorder
-    this.counterDownDOM = $('.used-time')
-    this.counterDownTime = 0
-
-    this.text = {
-      start: '开始转写',
-      stop: '结束转写'
-    }
-    this.resultText = ''
   }
 
   start() {
@@ -246,7 +214,6 @@ class IatRTCRecord {
   }
 
   stop() {
-    $('hr').removeClass('hr')
     this.iatRecorder.stop()
   }
 
@@ -254,58 +221,10 @@ class IatRTCRecord {
     this.counterDownTime = 0
     clearTimeout(this.counterDownTimeout)
     buffer = []
-    $('.time-box').removeClass('flex-display-1').css('display', 'none')
-    $('.start-button').text(this.text.start)
-    $('.dialect').css('display', 'none')
-    $('.dialect-select').css('display', 'inline-block')
-    $('.taste-button').css('background', '#0b99ff')
   }
 
-  // 语音转写、RTC、录音
-  init() {
-    let self = this
-    //开始
-    // $('#record_start_button').click(function () {
-    //   console.log("语音转写");
-    //   debugger;
-    //   {
-    //     if (navigator.getUserMedia && AudioContext && recorderWorker) {
-    //       self.start()
-    //     } else {
-    //       alert(notSupportTip)
-    //     }
-    //   }
-    //   console.log("语音转写 Success");
-    // })
-
-    //结束
-    $('#record_end_button').click(function () {
-      // 1. 语音转写
-      {
-        if ($(this).text() === self.text.start && !$(this).prop('disabled')) {
-          $('#result_output').text('')
-          self.resultText = ''
-          self.start()
-          //console.log("按钮非禁用状态，正常启动" + $(this).prop('disabled'))
-        } else {
-          //$('.taste-content').css('display', 'none')
-          $('.start-button').attr('disabled', true);
-          self.stop()
-          //reset
-          this.counterDownTime = 0
-          clearTimeout(this.counterDownTimeout)
-          buffer = []
-          $('.time-box').removeClass('flex-display-1').css('display', 'none')
-          $('.start-button').text('转写停止中...')
-          $('.dialect').css('display', 'none')
-          $('.taste-button').css('background', '#8E8E8E')
-          $('.dialect-select').css('display', 'inline-block')
-
-          //console.log("按钮非禁用状态，正常停止" + $(this).prop('disabled'))
-        }
-      }
-    })
-  }
+  // 结果显示
+ 
   setResult(data) {
     let rtasrResult = []
     rtasrResult[data.seg_id] = data
@@ -350,4 +269,3 @@ class IatRTCRecord {
 }
 
 export const iatrtcrecord = new IatRTCRecord()
-iatrtcrecord.init()
