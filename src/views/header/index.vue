@@ -20,7 +20,7 @@ const checkboxStore = useCheckBox();
 const isAllChecked = ref(false)
 
 checkboxStore.$subscribe((mutation,state)=>{
-  if(state.sum === state.checkedCnt){
+  if(state.sum === state.checkedCnt && state.sum !== 0){
     isAllChecked.value = true;
   }
   else {

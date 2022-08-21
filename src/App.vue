@@ -13,7 +13,8 @@ import { computed, inject, onMounted, onUpdated, reactive, ref, watchEffect,getC
 import MainContainer from '@/views/main/index.vue'
 import FooterContainer from '@/views/footer/index.vue'
 import HeaderContainer from '@/views/header/index.vue'
-
+import { useCheckBox } from './stores/index';
+const checkboxStore = useCheckBox();
 
 const vm = getCurrentInstance();
 window.vm = vm;
@@ -42,9 +43,22 @@ const pushMessage = (item) => {
 }
 
 const delMessage = (pos) => {
-  let arr = storage.state.arr.filter((item,index)=>{
-    return index !== pos
-  });
+  let arr ;
+  if(checkboxStore.isCheckboxShow){
+    let cnt = 0;
+    arr = storage.state.arr.filter((item)=>{
+      ++cnt;
+      return item.isChecked !== true;
+    })
+    checkboxStore.setFullChecked(false);
+    checkboxStore.setSum(cnt);
+    checkboxStore.setCheckedCnt(0);
+  }
+  else {
+    arr = storage.state.arr.filter((item,index)=>{
+      return index !== pos
+    });
+  }
   storage.setState({arr})
 }
 
