@@ -131,7 +131,6 @@ class IatRecorder {
     this.ws.onclose = (e) => {
       this.stop()
       console.log("关闭连接ws.onclose");
-      $('.start-button').attr('disabled', false);
       this.config.onClose && this.config.onClose(e)
     }
   }

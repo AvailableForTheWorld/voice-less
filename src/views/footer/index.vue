@@ -2,12 +2,12 @@
   <div class="footer-container">
     <div>
       <el-input class="input-container" v-model="input" placeholder="Please input" type="textarea" rows="1" @focus="resizeElInput" @blur="restoreElInput"/>
-      <div class="cursor"  @click="handleRecordStart">
+      <div v-if="!isRecording" class="cursor"  @click="handleRecordStart">
         <el-icon class="recording">
           <img src="../../assets/icons/recording.svg" />
         </el-icon>
       </div>
-      <div class="cursor" @click="handleRecordEnd">
+      <div v-else class="cursor" @click="handleRecordEnd">
         <el-icon class="recording">
           <img src="../../assets/icons/cancel-recording.svg" />
         </el-icon>
@@ -19,12 +19,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineEmits,getCurrentInstance } from 'vue'
+import { ref, defineEmits,getCurrentInstance, onMounted } from 'vue'
 import { iatrtcrecord } from '@/utils/index.js'
 
 const input = ref('')
 const emit = defineEmits(['push-message','output'])
-
+const isRecording = ref(false);
 
 const handleInputClick = () => {
   emit('push-message', {
@@ -46,10 +46,14 @@ window.emitMessage = emitMessage;
 
 const handleRecordStart = () => {
   iatrtcrecord.start()
+  isRecording.value = true;
+  window.context.dispatchMagixEvent('changeRecordingShow',{isRecording:true})
 }
 
 const handleRecordEnd = ()=> {
   iatrtcrecord.stop()
+  isRecording.value = false;
+  window.context.dispatchMagixEvent('changeRecordingShow',{isRecording:false})
 }
 
 const handleOutPut = () => {
@@ -64,6 +68,13 @@ const restoreElInput = (e) => {
   e.preventDefault();
   e.target.rows = 1;
 }
+
+onMounted(()=>{
+   window.context.addMagixEventListener('changeRecordingShow',({payload})=>{
+    isRecording.value = payload.isRecording;
+  })
+})
+
 </script>
 
 <style lang="scss">
