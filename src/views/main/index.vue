@@ -45,9 +45,9 @@ const props = defineProps(['list','info'])
 const emit = defineEmits(['del-message','check-message'])
 
 const buttons = [
-  { type: 'primary', text: '删除' },
+  { type: 'danger', text: '删除' },
   { type: 'success', text: '多选' },
-  { type: '', text: '复制'},
+  { type: 'primary', text: '复制'},
 ] as const
 
 const isChecked = ref(false)
