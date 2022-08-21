@@ -1,10 +1,13 @@
 <template>
-  <div class="header-container">
-    <div class="all-in">
+  <div class="header-container" v-show="checkboxStore.isCheckboxShow">
+    <div class="all-in" >
       <div class="checkbox">
         <input v-model="isAllChecked" type="checkbox" @change="changeAll" />
       </div>
       <label>全选</label>
+    </div>
+    <div class="cancel" @click="handelCheckboxCancel">
+      <span>取消多选</span>
     </div>
   </div>
 </template>
@@ -31,9 +34,12 @@ const emit = defineEmits(['changeAllChecked'])
 const changeAll = () => {
   emit('changeAllChecked',isAllChecked.value);
   checkboxStore.setFullChecked(isAllChecked.value)
-  // window.context.dispatchMagixEvent('changeAllChecked',{checked: isAllChecked.value})
+  
 }
-
+const handelCheckboxCancel = ()=>{
+  checkboxStore.setCheckboxShow(false)
+  window.context.dispatchMagixEvent('changeCheckboxShow',{isCheckboxShow:false})
+}
 
 onMounted(()=>{
     window.context.addMagixEventListener('changeSumChecked',({payload})=>{
@@ -47,6 +53,9 @@ onMounted(()=>{
 .header-container{
   width: 100%;
   position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   top: 20px;
   z-index: 10;
   background-color: white;
@@ -62,6 +71,9 @@ onMounted(()=>{
       text-align: center;
       line-height: 50px;
     }
+  }
+  .cancel {
+    margin-right: 20px;
   }
 }
 </style>

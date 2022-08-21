@@ -6,6 +6,7 @@ export const useCheckBox = defineStore('checkbox',{
             isFullChecked: false,
             checkedCnt: 0,
             sum: 0,
+            isCheckboxShow: false,
         }
     },
     getters: {
@@ -32,6 +33,9 @@ export const useCheckBox = defineStore('checkbox',{
         },
         setSum(val : number){
             this.sum = val;
+        },
+        setCheckboxShow(val : boolean){
+            this.isCheckboxShow = val;
         }
     }
 })
