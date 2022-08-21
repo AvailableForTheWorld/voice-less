@@ -1,6 +1,5 @@
 <template>
-  <div class="main-container">
-      
+  <div class="main-container">   
     <div class="user-message" v-for="(item,index) in list" >
       <div class="checkbox-wrapper">
         <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item,index)"/>
@@ -95,17 +94,8 @@ onMounted(()=>{
   }
   checkboxStore.setSum(sum);
   checkboxStore.setCheckedCnt(cnt);
-  // window.context.addMagixEventListener('changeAllChecked',({payload})=>{
-  //   // changeAllChecked(payload.checked)
-  // })
 })
 
-const changeAllChecked = (val) => {
-  const list = props.list;
-  for(let key in list){
-    list[key].isChecked = val;
-  }
-}
 
 const getDate = (date)=>{
   const oldVal = new Date(date), newVal = new Date();

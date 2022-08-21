@@ -49,14 +49,14 @@ const delMessage = (pos) => {
 }
 
 const checkMessage = (val) => {
-  const storeArr = {...storage.state.arr};
+  const storeArr = [...storage.state.arr];
   storage.setState({arr:storeArr})
 }
 
 const handleChangeAllChecked = (val) => {
-  const storeArr = {...storage.state.arr};
-  Object.keys(storeArr).forEach((key)=>{
-    storeArr[key].isChecked = val;
+  const storeArr = [...storage.state.arr];
+  storeArr.forEach((item)=>{
+    item.isChecked = val;
   })
   storage.setState({arr:storeArr});
 }
@@ -65,10 +65,6 @@ const messList = ref(storage.state.arr);
 const infoList = ref(storage.state.info);
 
 const container = ref(null);
-// const list1 = computed<string>({
-//   get: () => mess_list.value,
-//   set: (arr) => storage.setState({ arr }),
-// });
 
 const scrollToEnd = ()=>{
   const dom = document.querySelector('.telebox-content')
