@@ -10,7 +10,7 @@ export const useCheckBox = defineStore('checkbox',{
         }
     },
     getters: {
-
+        Sum: (state)=> state.sum
     },
     actions: {
         setFullChecked(boolValue:boolean){
