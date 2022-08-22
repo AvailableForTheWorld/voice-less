@@ -29,11 +29,11 @@
       <div v-if="isCardHover===index" class="show-time">{{getDate(item.date)}}</div>
     </div>
 
-    <el-card  class="captions">
-      <div v-for="(item,index) in captionList">
+    <ul  class="captions">
+      <li v-for="(item,index) in captionList">
         {{item.content}}
-      </div>
-    </el-card>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -110,6 +110,14 @@ const handleCardOptionsClick = (text,index) => {
   }
 }
 
+const scrollToEnd = ()=>{
+  const dom = document.querySelector('.captions')
+  setTimeout(()=>{
+    dom?.scrollTo(0,dom.scrollHeight);
+  },0)
+  
+}
+
 onUpdated(()=>{
   typeList.value = props.list.filter((item)=>{
     return item.type == 1;
@@ -117,6 +125,7 @@ onUpdated(()=>{
   captionList.value = props.list.filter((item)=>{
     return item.type == 0;
   })
+  scrollToEnd();
 })
 
 onMounted(()=>{
@@ -139,6 +148,7 @@ onMounted(()=>{
   window.context.addMagixEventListener('changeCheckboxShow',({payload})=>{
     checkboxStore.isCheckboxShow = payload.isCheckboxShow;
   })
+  scrollToEnd();
 })
 
 
@@ -203,6 +213,8 @@ const getDate = (date)=>{
     top: 100px;
     right: 20px;
     overflow-y: scroll;
+    background-color: rgba(0,0,0,0.1);
+    padding: 0 0 0 22px;
   }
 }
 </style>
