@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <div class="user-message" v-for="(item,index) in list" >
+    <div class="user-message" v-for="(item,index) in typeList">
       <div class="checkbox-wrapper" v-show="checkboxStore.isCheckboxShow">
         <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item,index)"/>
       </div>
@@ -28,12 +28,17 @@
       
       <div v-if="isCardHover===index" class="show-time">{{getDate(item.date)}}</div>
     </div>
-    
+
+    <el-card  class="captions">
+      <div v-for="(item,index) in captionList">
+        {{item.content}}
+      </div>
+    </el-card>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { defineProps,watch,toRefs,ref, watchEffect, onMounted, computed, defineEmits } from 'vue'
+import { defineProps,watch,toRefs,ref, watchEffect, onMounted, computed, defineEmits, onUpdated } from 'vue'
 import bus from '../../utils/bus'
 import { useCheckBox } from '../../stores/index';
 
@@ -51,6 +56,8 @@ const buttons = [
 ] as const
 
 const isChecked = ref(false)
+const typeList = ref([])
+const captionList = ref([])
 const judgeAvatarDuplicated = (item,index) => {
   if(index && props.list[index-1]?.id == item.id){
     return false;
@@ -103,12 +110,27 @@ const handleCardOptionsClick = (text,index) => {
   }
 }
 
+onUpdated(()=>{
+  typeList.value = props.list.filter((item)=>{
+    return item.type == 1;
+  })
+  captionList.value = props.list.filter((item)=>{
+    return item.type == 0;
+  })
+})
+
 onMounted(()=>{
-  const list = props.list
+  typeList.value = props.list.filter((item)=>{
+    return item.type == 1;
+  })
+  
+  captionList.value = props.list.filter((item)=>{
+    return item.type == 0;
+  })
   let cnt = 0,sum=0;
-  for(let item in list){
+  for(let item in typeList.value){
     ++sum;
-    if(list[item].isChecked){
+    if(typeList.value[item].isChecked){
       ++cnt;
     }
   }
@@ -145,6 +167,7 @@ const getDate = (date)=>{
 
 <style lang="scss">
 .main-container {
+  position: relative;
   padding: 50px 20px 30px;
   .user-message{
     position: relative;
@@ -173,6 +196,13 @@ const getDate = (date)=>{
       color: rgba(#000000,0.3);
     }
   }
-  
+  .captions {
+    position: fixed;
+    width: 200px;
+    height: 300px;
+    top: 100px;
+    right: 20px;
+    overflow-y: scroll;
+  }
 }
 </style>

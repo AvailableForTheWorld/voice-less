@@ -34,6 +34,7 @@ const handleInputClick = () => {
     content: input.value,
     id: window.context.getRoom().observerId,
     date: new Date().getTime(),
+    type: 1
   })
   input.value = ''
 }
@@ -43,6 +44,7 @@ const emitMessage = (data) => {
     content: data,
     id: window.context.getRoom().observerId,
     date: new Date().getTime(),
+    type: 0
   })
 }
 window.emitMessage = emitMessage;
