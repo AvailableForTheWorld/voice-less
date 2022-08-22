@@ -1,7 +1,7 @@
 <template>
   <div class="footer-container">
     <div>
-      <el-input class="input-container" v-model="input" placeholder="Please input" type="textarea" rows="1" @focus="resizeElInput" @blur="restoreElInput"/>
+      <el-input class="input-container" v-model="input" placeholder="Please input" type="textarea" rows="1" @focus="resizeElInput" ref="textArea"/>
       <div v-if="!isRecording" class="cursor"  @click="handleRecordStart">
         <el-icon class="recording">
           <img src="../../assets/icons/recording.svg" />
@@ -28,10 +28,13 @@ const emit = defineEmits(['push-message','output'])
 const isRecording = ref(false);
 
 const handleInputClick = () => {
+  const inputArea = document.querySelector('.input-container')?.children[0];
+  inputArea.rows = 1;
   emit('push-message', {
     content: input.value,
     id: window.context.getRoom().observerId,
     date: new Date().getTime(),
+    type: 1
   })
   input.value = ''
 }
@@ -41,6 +44,7 @@ const emitMessage = (data) => {
     content: data,
     id: window.context.getRoom().observerId,
     date: new Date().getTime(),
+    type: 0
   })
 }
 window.emitMessage = emitMessage;
@@ -71,10 +75,6 @@ const handleOutPut = () => {
 const resizeElInput = (e) => {
   e.preventDefault();
   e.target.rows = 10;
-}
-const restoreElInput = (e) => {
-  e.preventDefault();
-  e.target.rows = 1;
 }
 
 onMounted(()=>{

@@ -89,7 +89,10 @@ const container = ref(null);
 
 const scrollToEnd = ()=>{
   const dom = document.querySelector('.telebox-content')
-  dom?.scrollTo(0,dom.scrollHeight);
+  setTimeout(()=>{
+    dom?.scrollTo(0,dom.scrollHeight);
+  },0)
+  
 }
 
 const handleOutput = () => {
