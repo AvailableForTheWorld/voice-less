@@ -29,11 +29,21 @@
       <div v-if="isCardHover===index" class="show-time">{{getDate(item.date)}}</div>
     </div>
 
-    <ul  class="captions">
-      <li v-for="(item,index) in captionList">
-        {{item.content}}
-      </li>
-    </ul>
+    <div class="caption-container">
+      <div class="caption-header">
+        <el-button text class="caption-btn" :disabled="!judgeRecordingPanelShow" @click="isHandleRecordingShow = false">隐藏</el-button>
+        <div>字幕显示</div>
+        <el-button text class="caption-btn" :disabled="judgeRecordingPanelShow" @click="isHandleRecordingShow = true">显示</el-button>
+      </div>
+      <ul  class="caption-content" v-if="judgeRecordingPanelShow">
+        <li v-for="(item,index) in captionList">
+          <div class="caption-date">{{getDate(item.date)}}</div>
+          <div class="caption-words">
+            {{item.content}}
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -45,7 +55,7 @@ import { useCheckBox } from '../../stores/index';
 const checkboxStore = useCheckBox();
 
 
-const props = defineProps(['list','info'])
+const props = defineProps(['list','info','isRecordingPanelShow'])
 
 const emit = defineEmits(['del-message','check-message'])
 
@@ -111,12 +121,24 @@ const handleCardOptionsClick = (text,index) => {
 }
 
 const scrollToEnd = ()=>{
-  const dom = document.querySelector('.captions')
+  const dom = document.querySelector('.caption-content')
   setTimeout(()=>{
     dom?.scrollTo(0,dom.scrollHeight);
-  },0)
+  },200)
   
 }
+
+const isHandleRecordingShow = ref(false);
+
+const judgeRecordingPanelShow = computed(()=>{
+  if(isHandleRecordingShow.value){
+    return true;
+  }
+  else if(props.isRecordingPanelShow){
+    return true;
+  }
+  return false;
+})
 
 onUpdated(()=>{
   typeList.value = props.list.filter((item)=>{
@@ -165,7 +187,7 @@ const getDate = (date)=>{
     return `${year}-${month}-${day} ${hour}:${minute}:${second}`
   }
   else if((newVal-oldVal)/(1000*3600*24)>1){
-    return `${month}月 ${day}日 ${hour}:${minute}:${second}`
+    return `${month} 月 ${day} 日 ${hour}:${minute}:${second}`
   }
   else {
     return `${hour}:${minute}:${second}`
@@ -206,15 +228,66 @@ const getDate = (date)=>{
       color: rgba(#000000,0.3);
     }
   }
-  .captions {
+  
+  .fold {
+    height: 10px;
+    background-color: #aaaaaa;
+  }
+  .caption-container {
     position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
     width: 200px;
     height: 300px;
-    top: 100px;
-    right: 20px;
-    overflow-y: scroll;
-    background-color: rgba(0,0,0,0.1);
-    padding: 0 0 0 22px;
+    
+    color: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+    .caption-header {
+      display: flex;
+      font-size: 14px;
+      height: 32px;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #121217;
+      padding: 0 10px;
+      .caption-btn {
+        height: 20px;
+        font-size: 12px;
+        padding: 0 4px;
+      }
+    }
+    .caption-content {
+      font-size: 12px;
+      overflow-y: scroll;
+      height: calc(100% - 24px);
+      margin: 0;
+      background-color: rgba($color: #000000, $alpha: 0.8);
+      padding: 0 ;
+      li {
+        list-style: none;
+      }
+      .caption-date {
+        text-align: left;
+        margin-left: -12px;
+        transform: scale(0.8);
+      }
+      .caption-words {
+        margin-left: 20px;
+      }
+      &::-webkit-scrollbar {
+        display: block;
+        width: 8px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #888888;
+        border-radius: 4px;
+      }
+      &::-webkit-scrollbar-track-piece {
+        background-color: transparent;
+      }
+    }
   }
 }
 </style>

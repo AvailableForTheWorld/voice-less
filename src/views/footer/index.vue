@@ -24,7 +24,7 @@ import { iatrtcrecord } from '@/utils/index.js'
 import { ElMessage } from 'element-plus'
 
 const input = ref('')
-const emit = defineEmits(['push-message','output'])
+const emit = defineEmits(['push-message','output','toggle-recording-panel'])
 const isRecording = ref(false);
 
 const handleInputClick = () => {
@@ -53,6 +53,7 @@ const handleRecordStart = () => {
   iatrtcrecord.start()
   isRecording.value = true;
   window.context.dispatchMagixEvent('changeRecordingShow',{isRecording:true})
+  emit('toggle-recording-panel',true);
   ElMessage({
     message: '正在录音，点击底部红色按钮取消录音',
     type: 'success',
@@ -62,6 +63,7 @@ const handleRecordStart = () => {
 const handleRecordEnd = ()=> {
   iatrtcrecord.stop()
   isRecording.value = false;
+  emit('toggle-recording-panel',false);
   window.context.dispatchMagixEvent('changeRecordingShow',{isRecording:false})
   ElMessage({
     message: '已结束录音',
@@ -80,6 +82,12 @@ const resizeElInput = (e) => {
 onMounted(()=>{
    window.context.addMagixEventListener('changeRecordingShow',({payload})=>{
     isRecording.value = payload.isRecording;
+    if(isRecording.value){
+      emit('toggle-recording-panel',true);
+    }
+    else {
+      emit('toggle-recording-panel',false);
+    }
   })
 })
 
