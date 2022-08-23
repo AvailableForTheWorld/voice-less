@@ -221,10 +221,17 @@ const getDate = (date)=>{
     transform: translateY(-50%);
     width: 200px;
     height: 300px;
+    background-color: rgba($color: #000000, $alpha: 0.8);
+    color: #fff;
+    border-radius: 4px;
+    overflow: hidden;
     .caption-header {
       font-size: 14px;
+      text-align: center;
+      background-color: #121217;
     }
     .caption-content {
+      font-size: 12px;
       overflow-y: scroll;
       height: calc(100% - 24px);
       margin: 4px 0;
