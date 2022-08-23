@@ -1,8 +1,8 @@
 <template>
   <div>
     <header-container @changeAllChecked="handleChangeAllChecked"></header-container>
-    <main-container :list="messList" :info="infoList" @delMessage="delMessage" @checkMessage="checkMessage"></main-container>
-    <footer-container @pushMessage="pushMessage" @output="handleOutput"></footer-container>
+    <main-container :list="messList" :info="infoList" :isRecordingPanelShow="isRecordingPanelShow" @delMessage="delMessage" @checkMessage="checkMessage"></main-container>
+    <footer-container @pushMessage="pushMessage" @output="handleOutput" @toggleRecordingPanel="handleRecordingPanel"></footer-container>
   </div>
 </template>
 
@@ -113,6 +113,12 @@ const handleOutput = () => {
       pom.click();
   }
 }
+
+const isRecordingPanelShow = ref(false)
+const handleRecordingPanel = (val) => {
+  isRecordingPanelShow.value = val;
+}
+
 
 onMounted(() =>{
     storage.addStateChangedListener(() => {

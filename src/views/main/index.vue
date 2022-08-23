@@ -29,11 +29,14 @@
       <div v-if="isCardHover===index" class="show-time">{{getDate(item.date)}}</div>
     </div>
 
-    <ul  class="captions">
-      <li v-for="(item,index) in captionList">
-        {{item.content}}
-      </li>
-    </ul>
+    <div class="caption-container">
+      <div class="caption-header">字幕显示</div>
+      <ul  class="caption-content" >
+        <li v-for="(item,index) in captionList">
+          {{item.content}}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -45,7 +48,7 @@ import { useCheckBox } from '../../stores/index';
 const checkboxStore = useCheckBox();
 
 
-const props = defineProps(['list','info'])
+const props = defineProps(['list','info','isRecordingPanelShow'])
 
 const emit = defineEmits(['del-message','check-message'])
 
@@ -206,15 +209,28 @@ const getDate = (date)=>{
       color: rgba(#000000,0.3);
     }
   }
-  .captions {
+  
+  .fold {
+    height: 10px;
+    background-color: #aaaaaa;
+  }
+  .caption-container {
     position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
     width: 200px;
     height: 300px;
-    top: 100px;
-    right: 20px;
-    overflow-y: scroll;
-    background-color: rgba(0,0,0,0.1);
-    padding: 0 0 0 22px;
+    .caption-header {
+      font-size: 14px;
+    }
+    .caption-content {
+      overflow-y: scroll;
+      height: calc(100% - 24px);
+      margin: 4px 0;
+      background-color: rgba(0,0,0,0.1);
+      padding: 0 0 0 22px;
+    }
   }
 }
 </style>
