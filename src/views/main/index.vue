@@ -33,7 +33,10 @@
       <div class="caption-header">字幕显示</div>
       <ul  class="caption-content" >
         <li v-for="(item,index) in captionList">
-          {{item.content}}
+          <div class="caption-date">{{getDate(item.date)}}</div>
+          <div class="caption-words">
+            {{item.content}}
+          </div>
         </li>
       </ul>
     </div>
@@ -168,7 +171,7 @@ const getDate = (date)=>{
     return `${year}-${month}-${day} ${hour}:${minute}:${second}`
   }
   else if((newVal-oldVal)/(1000*3600*24)>1){
-    return `${month}月 ${day}日 ${hour}:${minute}:${second}`
+    return `${month} 月 ${day} 日 ${hour}:${minute}:${second}`
   }
   else {
     return `${hour}:${minute}:${second}`
@@ -236,7 +239,18 @@ const getDate = (date)=>{
       height: calc(100% - 24px);
       margin: 4px 0;
       background-color: rgba(0,0,0,0.1);
-      padding: 0 0 0 22px;
+      padding: 0 ;
+      li {
+        list-style: none;
+      }
+      .caption-date {
+        text-align: left;
+        margin-left: -12px;
+        transform: scale(0.8);
+      }
+      .caption-words {
+        margin-left: 20px;
+      }
       &::-webkit-scrollbar {
         display: block;
         width: 8px;
