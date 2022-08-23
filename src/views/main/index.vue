@@ -30,8 +30,12 @@
     </div>
 
     <div class="caption-container">
-      <div class="caption-header">字幕显示</div>
-      <ul  class="caption-content" >
+      <div class="caption-header">
+        <el-button text class="caption-btn" :disabled="!judgeRecordingPanelShow" @click="isHandleRecordingShow = false">隐藏</el-button>
+        <div>字幕显示</div>
+        <el-button text class="caption-btn" :disabled="judgeRecordingPanelShow" @click="isHandleRecordingShow = true">显示</el-button>
+      </div>
+      <ul  class="caption-content" v-if="judgeRecordingPanelShow">
         <li v-for="(item,index) in captionList">
           <div class="caption-date">{{getDate(item.date)}}</div>
           <div class="caption-words">
@@ -123,6 +127,18 @@ const scrollToEnd = ()=>{
   },200)
   
 }
+
+const isHandleRecordingShow = ref(false);
+
+const judgeRecordingPanelShow = computed(()=>{
+  if(isHandleRecordingShow.value){
+    return true;
+  }
+  else if(props.isRecordingPanelShow){
+    return true;
+  }
+  return false;
+})
 
 onUpdated(()=>{
   typeList.value = props.list.filter((item)=>{
@@ -224,21 +240,30 @@ const getDate = (date)=>{
     transform: translateY(-50%);
     width: 200px;
     height: 300px;
-    background-color: rgba($color: #000000, $alpha: 0.8);
+    
     color: #fff;
     border-radius: 4px;
     overflow: hidden;
     .caption-header {
+      display: flex;
       font-size: 14px;
-      text-align: center;
+      height: 32px;
+      justify-content: space-between;
+      align-items: center;
       background-color: #121217;
+      padding: 0 10px;
+      .caption-btn {
+        height: 20px;
+        font-size: 12px;
+        padding: 0 4px;
+      }
     }
     .caption-content {
       font-size: 12px;
       overflow-y: scroll;
       height: calc(100% - 24px);
-      margin: 4px 0;
-      background-color: rgba(0,0,0,0.1);
+      margin: 0;
+      background-color: rgba($color: #000000, $alpha: 0.8);
       padding: 0 ;
       li {
         list-style: none;
