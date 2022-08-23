@@ -114,10 +114,10 @@ const handleCardOptionsClick = (text,index) => {
 }
 
 const scrollToEnd = ()=>{
-  const dom = document.querySelector('.captions')
+  const dom = document.querySelector('.caption-content')
   setTimeout(()=>{
     dom?.scrollTo(0,dom.scrollHeight);
-  },0)
+  },200)
   
 }
 
@@ -230,6 +230,17 @@ const getDate = (date)=>{
       margin: 4px 0;
       background-color: rgba(0,0,0,0.1);
       padding: 0 0 0 22px;
+      &::-webkit-scrollbar {
+        display: block;
+        width: 8px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #888888;
+        border-radius: 4px;
+      }
+      &::-webkit-scrollbar-track-piece {
+        background-color: transparent;
+      }
     }
   }
 }

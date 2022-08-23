@@ -91,7 +91,7 @@ const scrollToEnd = ()=>{
   const dom = document.querySelector('.telebox-content')
   setTimeout(()=>{
     dom?.scrollTo(0,dom.scrollHeight);
-  },0)
+  },200)
   
 }
 
