@@ -2,7 +2,7 @@
   <div class="main-container">
     <div class="user-message" v-for="(item,index) in typeList" :key="item.date">
       <div class="checkbox-wrapper" v-show="checkboxStore.isCheckboxShow">
-        <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item,index)"/>
+        <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item,index)" class="input-checkbox"/>
       </div>
       <el-avatar class="user-avatar" :size="40" :style="{backgroundColor:info[item.id]?.color,visibility:judgeAvatarDuplicated(item,index)?'visible':'hidden'}">{{item.id}}</el-avatar>
       <el-popover
@@ -212,6 +212,9 @@ const getDate = (date)=>{
       height: 50px;
       text-align: center;
       line-height: 50px;
+      .input-checkbox {
+        cursor: pointer;
+      }
     }
     .user-avatar {
       margin: 4px 20px 4px 0;

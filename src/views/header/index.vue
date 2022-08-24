@@ -2,7 +2,7 @@
   <div class="header-container" v-show="checkboxStore.isCheckboxShow">
     <div class="all-in" >
       <div class="checkbox">
-        <input v-model="isAllChecked" type="checkbox" @change="changeAll" />
+        <input v-model="isAllChecked" type="checkbox" @change="changeAll" class="input-checkbox"/>
       </div>
       <label>全选</label>
     </div>
@@ -70,9 +70,13 @@ onMounted(()=>{
       height: 50px;
       text-align: center;
       line-height: 50px;
+      .input-checkbox {
+        cursor: pointer;
+      }
     }
   }
   .cancel {
+    cursor: pointer;
     margin-right: 20px;
   }
 }
