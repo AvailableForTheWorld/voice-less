@@ -140,16 +140,16 @@ const judgeRecordingPanelShow = computed(()=>{
   return false;
 })
 
-onUpdated(()=>{
-  console.log("laotie666")
-  typeList.value = props.list.filter((item)=>{
+watch(()=>props.list,(newVal)=>{
+  typeList.value = newVal.filter((item)=>{
     return item.type == 1;
   })
-  captionList.value = props.list.filter((item)=>{
+  captionList.value = newVal.filter((item)=>{
     return item.type == 0;
   })
   scrollToEnd();
-})
+},{deep:true})
+
 
 onMounted(()=>{
   typeList.value = props.list.filter((item)=>{
