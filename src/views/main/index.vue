@@ -2,7 +2,7 @@
   <div class="main-container">
     <div class="user-message" v-for="(item,index) in typeList" :key="item.date">
       <div class="checkbox-wrapper" v-show="checkboxStore.isCheckboxShow">
-        <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item,index)"/>
+        <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item,index)" class="input-checkbox"/>
       </div>
       <el-avatar class="user-avatar" :size="40" :style="{backgroundColor:info[item.id]?.color,visibility:judgeAvatarDuplicated(item,index)?'visible':'hidden'}">{{item.id}}</el-avatar>
       <el-popover
@@ -105,7 +105,7 @@ const handleCardOptionsClick = (text,index) => {
   else if(text === '复制'){
     let str = ''
     if(checkboxStore.isCheckboxShow){
-      let arr = props.list.map((item)=>{
+      let arr = typeList.value.map((item)=>{
         if(item.isChecked){
           return item.content;
         }
@@ -114,7 +114,7 @@ const handleCardOptionsClick = (text,index) => {
       str = arr.join('\n');
     }
     else {
-      str += props.list[index].content;
+      str += typeList.value[index].content;
     }
     navigator.clipboard.writeText(str)
   }
@@ -212,6 +212,9 @@ const getDate = (date)=>{
       height: 50px;
       text-align: center;
       line-height: 50px;
+      .input-checkbox {
+        cursor: pointer;
+      }
     }
     .user-avatar {
       margin: 4px 20px 4px 0;
