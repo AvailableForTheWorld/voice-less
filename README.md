@@ -1,4 +1,4 @@
-# 项目介绍
+## 项目简介
 
 [本项目](https://github.com/AvailableForTheWorld/voice-less)为伴有实时字幕到聊天工具，是会议中进行头脑风暴的便携辅助的记录工具。
 
@@ -56,3 +56,9 @@
   - [x] 消息时间显示
   - [x] 导出消息
   
+## 技术栈
+1. vue3
+2. saas
+3. pinia
+4. element-plus
+
