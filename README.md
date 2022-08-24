@@ -37,6 +37,13 @@
 
 <img width="1049" alt="image" src="https://user-images.githubusercontent.com/49779788/186456202-a4b5945e-f85b-421a-8e8c-38399841587b.png">
 
+4. 消息输出
+
+  > 点击右下角导出按钮即可生成所有消息按照时间排序的txt文档
+
+<img width="1501" alt="image" src="https://user-images.githubusercontent.com/49779788/186458181-6abc6c9b-9041-4046-8913-5ef0c0236601.png">
+
+
 
 ## 功能点说明
 
