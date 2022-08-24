@@ -219,7 +219,7 @@ const getDate = (date)=>{
       background-color: skyblue;
     }
     .user-content {
-      flex: 1;
+      max-width: calc(100% - 110px);
       .text-content{
         white-space: pre-line;
         flex-wrap: wrap;
