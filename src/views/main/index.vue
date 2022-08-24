@@ -69,7 +69,7 @@ const isChecked = ref(false)
 const typeList = ref([])
 const captionList = ref([])
 const judgeAvatarDuplicated = (item,index) => {
-  if(index && props.list[index-1]?.id == item.id){
+  if(index && typeList.value[index-1]?.id == item.id){
     return false;
   }
   return true;
@@ -140,15 +140,16 @@ const judgeRecordingPanelShow = computed(()=>{
   return false;
 })
 
-onUpdated(()=>{
-  typeList.value = props.list.filter((item)=>{
+watch(()=>props.list,(newVal)=>{
+  typeList.value = newVal.filter((item)=>{
     return item.type == 1;
   })
-  captionList.value = props.list.filter((item)=>{
+  captionList.value = newVal.filter((item)=>{
     return item.type == 0;
   })
   scrollToEnd();
-})
+},{deep:true})
+
 
 onMounted(()=>{
   typeList.value = props.list.filter((item)=>{
