@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <div class="user-message" v-for="(item,index) in typeList">
+    <div class="user-message" v-for="(item,index) in typeList" :key="item.date">
       <div class="checkbox-wrapper" v-show="checkboxStore.isCheckboxShow">
         <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item,index)"/>
       </div>
