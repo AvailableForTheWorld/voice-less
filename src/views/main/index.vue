@@ -12,7 +12,7 @@
         :hide-after="0"
       >
         <template #reference>
-          <el-card @mousemove="handleCardHover(index)" @mouseout="handleCardMouseLeave()" class="user-content" shadow="hover"> <div class="text-content" v-html="item.content"></div> </el-card>
+          <el-card class="user-content" shadow="hover"> <div class="text-content" v-html="item.content"></div> </el-card>
         </template>
         <div class="flex justify-space-between mb-0 flex-wrap gap-2">
         <el-button
@@ -26,7 +26,7 @@
       </div>
       </el-popover>
       
-      <div v-if="isCardHover===index" class="show-time">{{getDate(item.date)}}</div>
+      <div class="show-time">{{getDate(item.date)}}</div>
     </div>
 
     <div class="caption-container">
@@ -224,8 +224,14 @@ const getDate = (date)=>{
       }
     }
     .show-time {
+      display: none;
       margin-left: 15px;
       color: rgba(#000000,0.3);
+    }
+    &:hover {
+      .show-time {
+        display: block;
+      }
     }
   }
   
