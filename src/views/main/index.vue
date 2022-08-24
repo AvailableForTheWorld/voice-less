@@ -4,7 +4,7 @@
       <div class="checkbox-wrapper" v-show="checkboxStore.isCheckboxShow">
         <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item,index)"/>
       </div>
-      <el-avatar class="user-avatar" :size="50" :style="{backgroundColor:info[item.id]?.color,visibility:judgeAvatarDuplicated(item,index)?'visible':'hidden'}">{{item.id}}</el-avatar>
+      <el-avatar class="user-avatar" :size="40" :style="{backgroundColor:info[item.id]?.color,visibility:judgeAvatarDuplicated(item,index)?'visible':'hidden'}">{{item.id}}</el-avatar>
       <el-popover
         placement="top-start"
         :width="'auto'"
@@ -205,7 +205,7 @@ const getDate = (date)=>{
     position: relative;
     display: flex;
     align-items: center;
-    margin: 20px 0;
+    margin: 0;
     .checkbox-wrapper{
       width: 50px;
       height: 50px;
@@ -213,7 +213,7 @@ const getDate = (date)=>{
       line-height: 50px;
     }
     .user-avatar {
-      margin: 10px 20px 10px 0;
+      margin: 4px 20px 4px 0;
       flex-shrink: 0;
       background-color: skyblue;
     }
@@ -289,6 +289,14 @@ const getDate = (date)=>{
         background-color: transparent;
       }
     }
+  }
+}
+</style>
+<style lang="scss">
+.user-content {
+  .el-card__body {
+    padding: 6px 10px;
+    font-size: 14px;
   }
 }
 </style>
