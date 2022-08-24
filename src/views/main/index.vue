@@ -105,7 +105,7 @@ const handleCardOptionsClick = (text,index) => {
   else if(text === '复制'){
     let str = ''
     if(checkboxStore.isCheckboxShow){
-      let arr = props.list.map((item)=>{
+      let arr = typeList.value.map((item)=>{
         if(item.isChecked){
           return item.content;
         }
@@ -114,7 +114,7 @@ const handleCardOptionsClick = (text,index) => {
       str = arr.join('\n');
     }
     else {
-      str += props.list[index].content;
+      str += typeList.value[index].content;
     }
     navigator.clipboard.writeText(str)
   }
