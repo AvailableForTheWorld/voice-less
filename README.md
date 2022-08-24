@@ -29,6 +29,15 @@
 
 <img width="881" alt="image" src="https://user-images.githubusercontent.com/49779788/186431755-288ef483-55fd-4c59-a18b-8ace29ee4c94.png">
 
+3. 消息交互
+
+  > 可以对发送的文本消息进行多选、删除、复制操作，多选模式下可以进行全选和反选、多选删除以及多选复制操作，点击取消多选即可返回普通模式。
+  
+ <img width="1055" alt="image" src="https://user-images.githubusercontent.com/49779788/186456078-e4f379b5-e3b3-4174-b0f6-73f4d07e4165.png">
+
+<img width="1049" alt="image" src="https://user-images.githubusercontent.com/49779788/186456202-a4b5945e-f85b-421a-8e8c-38399841587b.png">
+
+
 ## 功能点说明
 
   - [x] 发送消息
