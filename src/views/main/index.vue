@@ -69,7 +69,7 @@ const isChecked = ref(false)
 const typeList = ref([])
 const captionList = ref([])
 const judgeAvatarDuplicated = (item,index) => {
-  if(index && props.list[index-1]?.id == item.id){
+  if(index && typeList.value[index-1]?.id == item.id){
     return false;
   }
   return true;
@@ -141,6 +141,7 @@ const judgeRecordingPanelShow = computed(()=>{
 })
 
 onUpdated(()=>{
+  console.log("laotie666")
   typeList.value = props.list.filter((item)=>{
     return item.type == 1;
   })
