@@ -40,6 +40,10 @@ const handleInputClick = () => {
 }
 
 const emitMessage = (data) => {
+  const reg = /[.,?。，？]/ 
+  if(data.length===1 && reg.test(data) ){
+    return;
+  }
   emit('push-message', {
     content: data,
     id: window.context.getRoom().observerId,

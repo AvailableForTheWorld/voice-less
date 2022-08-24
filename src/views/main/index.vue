@@ -36,7 +36,7 @@
         <el-button text class="caption-btn" :disabled="judgeRecordingPanelShow" @click="isHandleRecordingShow = true">显示</el-button>
       </div>
       <ul  class="caption-content" v-if="judgeRecordingPanelShow">
-        <li v-for="(item,index) in captionList">
+        <li v-for="(item,index) in captionList" :key="item.date">
           <div class="caption-date">{{getDate(item.date)}}</div>
           <div class="caption-words">
             {{item.content}}
