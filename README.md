@@ -6,7 +6,7 @@
 
 1.  在 .env 文件里配置白板房间 UUID 和 Token
 
-2. 本录音转文字是调用的商用讯飞ASR，免费时长较短，需要购买套餐，并将api-id以及api-key配置到.env文件中
+2.  本录音转文字是调用的讯飞ASR，将api-id以及api-key配置到.env文件中
 
 3.  执行 `npm install` 安装依赖
 
@@ -28,3 +28,15 @@
 <img width="1239" alt="image" src="https://user-images.githubusercontent.com/49779788/186429676-d3282432-e115-4dab-b229-6036cc667eaa.png">
 
 <img width="881" alt="image" src="https://user-images.githubusercontent.com/49779788/186431755-288ef483-55fd-4c59-a18b-8ace29ee4c94.png">
+
+## 功能点说明
+
+  - [x] 发送消息
+  - [x] 语音转字幕
+  - [x] 多选消息
+  - [x] 删除消息
+  - [x] 复制消息
+  - [x] 多用户头像
+  - [x] 消息时间显示
+  - [x] 导出消息
+  
