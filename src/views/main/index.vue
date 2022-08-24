@@ -248,6 +248,7 @@ const getDate = (date)=>{
       display: flex;
       font-size: 14px;
       height: 32px;
+      border-radius: 4px;
       justify-content: space-between;
       align-items: center;
       background-color: #121217;
@@ -261,7 +262,7 @@ const getDate = (date)=>{
     .caption-content {
       font-size: 12px;
       overflow-y: scroll;
-      height: calc(100% - 24px);
+      height: calc(100% - 32px);
       margin: 0;
       background-color: rgba($color: #000000, $alpha: 0.8);
       padding: 0 ;
