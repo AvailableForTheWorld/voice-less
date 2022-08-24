@@ -1,10 +1,10 @@
 <template>
   <div class="main-container">
-    <div class="user-message" v-for="(item,index) in typeList">
+    <div class="user-message" v-for="(item,index) in typeList" :key="item.date">
       <div class="checkbox-wrapper" v-show="checkboxStore.isCheckboxShow">
         <input type="checkbox" v-model="item.isChecked" @change="handleCheckBox(item,index)"/>
       </div>
-      <el-avatar class="user-avatar" :size="50" :style="{backgroundColor:info[item.id]?.color,visibility:judgeAvatarDuplicated(item,index)?'visible':'hidden'}">{{item.id}}</el-avatar>
+      <el-avatar class="user-avatar" :size="40" :style="{backgroundColor:info[item.id]?.color,visibility:judgeAvatarDuplicated(item,index)?'visible':'hidden'}">{{item.id}}</el-avatar>
       <el-popover
         placement="top-start"
         :width="'auto'"
@@ -12,7 +12,7 @@
         :hide-after="0"
       >
         <template #reference>
-          <el-card @mousemove="handleCardHover(index)" @mouseout="handleCardMouseLeave()" class="user-content" shadow="hover"> <div class="text-content" v-html="item.content"></div> </el-card>
+          <el-card class="user-content" shadow="hover"> <div class="text-content" v-html="item.content"></div> </el-card>
         </template>
         <div class="flex justify-space-between mb-0 flex-wrap gap-2">
         <el-button
@@ -26,7 +26,7 @@
       </div>
       </el-popover>
       
-      <div v-if="isCardHover===index" class="show-time">{{getDate(item.date)}}</div>
+      <div class="show-time">{{getDate(item.date)}}</div>
     </div>
 
     <div class="caption-container">
@@ -36,7 +36,7 @@
         <el-button text class="caption-btn" :disabled="judgeRecordingPanelShow" @click="isHandleRecordingShow = true">显示</el-button>
       </div>
       <ul  class="caption-content" v-if="judgeRecordingPanelShow">
-        <li v-for="(item,index) in captionList">
+        <li v-for="(item,index) in captionList" :key="item.date">
           <div class="caption-date">{{getDate(item.date)}}</div>
           <div class="caption-words">
             {{item.content}}
@@ -205,7 +205,7 @@ const getDate = (date)=>{
     position: relative;
     display: flex;
     align-items: center;
-    margin: 20px 0;
+    margin: 0;
     .checkbox-wrapper{
       width: 50px;
       height: 50px;
@@ -213,7 +213,7 @@ const getDate = (date)=>{
       line-height: 50px;
     }
     .user-avatar {
-      margin: 10px 20px 10px 0;
+      margin: 4px 20px 4px 0;
       flex-shrink: 0;
       background-color: skyblue;
     }
@@ -224,8 +224,14 @@ const getDate = (date)=>{
       }
     }
     .show-time {
+      display: none;
       margin-left: 15px;
       color: rgba(#000000,0.3);
+    }
+    &:hover {
+      .show-time {
+        display: block;
+      }
     }
   }
   
@@ -248,6 +254,7 @@ const getDate = (date)=>{
       display: flex;
       font-size: 14px;
       height: 32px;
+      border-radius: 4px;
       justify-content: space-between;
       align-items: center;
       background-color: #121217;
@@ -261,7 +268,7 @@ const getDate = (date)=>{
     .caption-content {
       font-size: 12px;
       overflow-y: scroll;
-      height: calc(100% - 24px);
+      height: calc(100% - 32px);
       margin: 0;
       background-color: rgba($color: #000000, $alpha: 0.8);
       padding: 0 ;
@@ -288,6 +295,14 @@ const getDate = (date)=>{
         background-color: transparent;
       }
     }
+  }
+}
+</style>
+<style lang="scss">
+.user-content {
+  .el-card__body {
+    padding: 6px 10px;
+    font-size: 14px;
   }
 }
 </style>
