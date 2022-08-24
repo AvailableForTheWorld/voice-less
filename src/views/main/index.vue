@@ -49,7 +49,6 @@
 
 <script lang="ts" setup>
 import { defineProps,watch,toRefs,ref, watchEffect, onMounted, computed, defineEmits, onUpdated } from 'vue'
-import bus from '../../utils/bus'
 import { useCheckBox } from '../../stores/index';
 
 const checkboxStore = useCheckBox();
