@@ -58,7 +58,7 @@
   
 ## 技术栈
 1. vue3
-2. saas
+2. sass
 3. pinia
 4. element-plus
 
