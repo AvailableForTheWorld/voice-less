@@ -1,7 +1,7 @@
 <template>
   <div class="footer-container">
     <div>
-      <el-input class="input-container" v-model="input" placeholder="Please input" type="textarea" rows="1" @focus="resizeElInput" ref="textArea"/>
+      <el-input class="input-container" v-model="input" placeholder="Please input" type="textarea" rows="1" @focus="resizeElInput" @blur="handleInputBlur" ref="textArea"/>
       <div v-if="!isRecording" class="cursor"  @click="handleRecordStart">
         <el-icon class="recording">
           <img src="../../assets/icons/recording.svg" />
@@ -77,6 +77,12 @@ const handleOutPut = () => {
 const resizeElInput = (e) => {
   e.preventDefault();
   e.target.rows = 10;
+}
+
+const handleInputBlur = (e) => {
+  setTimeout(()=>{
+    e.target.rows = 1;
+  },100)
 }
 
 onMounted(()=>{
