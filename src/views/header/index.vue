@@ -1,14 +1,24 @@
 <template>
-  <div class="header-container" v-show="checkboxStore.isCheckboxShow">
-    <div class="all-in" >
-      <div class="checkbox">
-        <input v-model="isAllChecked" type="checkbox" @change="changeAll" class="input-checkbox"/>
-      </div>
-      <label>全选</label>
-    </div>
-    <div class="cancel" @click="handelCheckboxCancel">
-      <span>取消多选</span>
-    </div>
+  <div class="header-container">
+     <el-row style="width: 100%">
+        <el-col :span="12">
+          <!-- search -->
+          <MessageSearch />            
+        </el-col>
+        <el-col :span="12">
+          <div class="select-wrapper" v-show="checkboxStore.isCheckboxShow">
+            <div class="all-in" >
+              <div class="checkbox">
+                <input v-model="isAllChecked" type="checkbox" @change="changeAll" class="input-checkbox"/>
+              </div>
+              <label>全选</label>
+            </div>
+            <div class="cancel" @click="handelCheckboxCancel">
+              <span>取消多选</span>
+            </div>
+          </div>
+        </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -16,6 +26,7 @@
 
 import { ref, defineEmits, onMounted } from 'vue'
 import { useCheckBox } from '../../stores/index';
+import MessageSearch from '../../component/MessageSearch.vue';
 const checkboxStore = useCheckBox();
 const isAllChecked = ref(false)
 
@@ -52,13 +63,12 @@ onMounted(()=>{
 <style lang="scss">
 .header-container{
   width: 100%;
-  position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  top: 20px;
   z-index: 10;
   background-color: white;
+  height: 32px;
   .all-in{
     height: 50px;
     text-align: left;

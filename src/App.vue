@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-wrapper">
     <header-container @changeAllChecked="handleChangeAllChecked"></header-container>
     <main-container :list="messList" :info="infoList" :isRecordingPanelShow="isRecordingPanelShow" @delMessage="delMessage" @checkMessage="checkMessage"></main-container>
     <footer-container @pushMessage="pushMessage" @output="handleOutput" @toggleRecordingPanel="handleRecordingPanel"></footer-container>
@@ -132,5 +132,11 @@ onMounted(() =>{
 
 
 </script>
+
 <style lang="scss">
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 </style>

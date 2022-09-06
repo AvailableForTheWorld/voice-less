@@ -108,8 +108,11 @@ onMounted(()=>{
   cursor: pointer;
 }
 .footer-container {
-  position: fixed;
-  bottom: 0;
+  /* position: fixed; */
+  /* bottom: 0; */
+  // TODO: 输入框修正
+  width: 100%;
+  height: 32px;
   width: 100%;
   .input-container {
     .el-textarea__inner {
