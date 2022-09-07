@@ -20,7 +20,7 @@
           :key="button.text"
           :type="button.type"
           text
-          @click="handleCardOptionsClick(button.text,index)"
+          @click="handleCardOptionsClick(button.text,index,item)"
         >{{ button.text }}
         </el-button>
       </div>
@@ -93,9 +93,9 @@ const handleCardMouseLeave = () => {
   isCardHover.value = -1
 }
 
-const handleCardOptionsClick = (text,index) => {
+const handleCardOptionsClick = (text,index,item) => {
   if(text === '删除'){
-    emit('del-message',index);
+    emit('del-message',item.idNum);
   }
   else if(text === '多选'){
     checkboxStore.setCheckboxShow(true);
