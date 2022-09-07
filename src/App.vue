@@ -30,13 +30,19 @@ const pushMessage = (item) => {
   const arr1 = storage.state.arr;
   const info = storage.state.info;
   let cnt = storage.state.info.cnt;
+  let idNum = storage.state.info.idNum;
   if(!cnt){
     cnt = 0;
   }
-  if(!info[item.id]){
-    storage.setState({info:{...info,[item.id]:{color:color[cnt]},cnt:(cnt+1)%(color.length),}})
+  if(!idNum){
+    idNum = 0;
   }
-  const item1 = { ...item, isChecked:false }
+  if(!info[item.id]){
+    storage.setState({info:{...info,[item.id]:{color:color[cnt]},cnt:(cnt+1)%(color.length),idNum:idNum+1}})
+  }else {
+    storage.setState({info:{...info,idNum:idNum+1}})
+  }
+  const item1 = { ...item, isChecked:false, idNum: idNum+1 }
   const arr = arr1.length?[...arr1,item1]:[item1];
   storage.setState({arr})
   scrollToEnd();
@@ -63,7 +69,7 @@ const delMessage = (pos) => {
   }
   else {
     arr = storage.state.arr.filter((item,index)=>{
-      return index !== pos
+      return item.idNum !== pos
     });
   }
   storage.setState({arr})
