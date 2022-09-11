@@ -25,6 +25,8 @@ if (!context) throw new Error("must call provide('context') before mount App");
 // 头像颜色选择
 const color = ['#a8d8ea','#aa96da','#fcbad3','#ffffd2','#ffc7c7','#ffe2e2','#f6f6f6','#8785a2']
 const storage = context.createStorage("mess-list", { arr: [],info:{} });
+
+// 增加消息，包括文本消息以及录音字幕消息，这里面有一个唯一的标识符是 idNum
 const pushMessage = (item) => {
   checkboxStore.setSum(checkboxStore.Sum + 1)
   const arr1 = storage.state.arr;
@@ -48,6 +50,7 @@ const pushMessage = (item) => {
   scrollToEnd();
 }
 
+// 根据idNum这一标识符删除消息
 const delMessage = (pos) => {
   let arr ;
   if(checkboxStore.isCheckboxShow){
@@ -75,11 +78,13 @@ const delMessage = (pos) => {
   storage.setState({arr})
 }
 
+// 这里是在main组件内部触发checkbox点击以后把更新的storage的本地存储更新至云端
 const checkMessage = (val) => {
   const storeArr = [...storage.state.arr];
   storage.setState({arr:storeArr})
 }
 
+// 处理全选操作
 const handleChangeAllChecked = (val) => {
   const storeArr = [...storage.state.arr];
   storeArr.forEach((item)=>{
@@ -93,6 +98,7 @@ const infoList = ref(storage.state.info);
 
 const container = ref(null);
 
+// 事件滑到底部
 const scrollToEnd = ()=>{
   const dom = document.querySelector('.telebox-content')
   setTimeout(()=>{
@@ -101,6 +107,7 @@ const scrollToEnd = ()=>{
   
 }
 
+// 处理输出文件（后续得优化）
 const handleOutput = () => {
   const target = storage.state.arr.map((item)=>{
     return 'id '+ item.id + ' : ' + item.content;
@@ -120,6 +127,7 @@ const handleOutput = () => {
   }
 }
 
+// isRecordingPanelShow 变量用来展示字幕的panel是否显示
 const isRecordingPanelShow = ref(false)
 const handleRecordingPanel = (val) => {
   isRecordingPanelShow.value = val;
@@ -127,6 +135,7 @@ const handleRecordingPanel = (val) => {
 
 
 onMounted(() =>{
+    // 为了使响应式获取数据进行的数据库内部值变更监听
     storage.addStateChangedListener(() => {
       messList.value = storage.state.arr;
       infoList.value = storage.state.info;

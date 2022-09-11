@@ -19,6 +19,7 @@ import { useCheckBox } from '../../stores/index';
 const checkboxStore = useCheckBox();
 const isAllChecked = ref(false)
 
+// 这里监听pinia中的选中框的状态变化来使除了本人以外的其他人能看到修改状态
 checkboxStore.$subscribe((mutation,state)=>{
   if(state.sum === state.checkedCnt && state.sum !== 0){
     isAllChecked.value = true;
@@ -31,17 +32,21 @@ checkboxStore.$subscribe((mutation,state)=>{
 
 const emit = defineEmits(['changeAllChecked'])
 
+// 全选所有文本信息
 const changeAll = () => {
   emit('changeAllChecked',isAllChecked.value);
   checkboxStore.setFullChecked(isAllChecked.value)
   
 }
+
+// 取消选择所有文本信息
 const handelCheckboxCancel = ()=>{
   checkboxStore.setCheckboxShow(false)
   window.context.dispatchMagixEvent('changeCheckboxShow',{isCheckboxShow:false})
 }
 
 onMounted(()=>{
+    // 每次加载页面时监听是否有全部选择状态
     window.context.addMagixEventListener('changeSumChecked',({payload})=>{
     isAllChecked.value = payload.checked;
   })

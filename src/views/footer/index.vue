@@ -27,6 +27,7 @@ const input = ref('')
 const emit = defineEmits(['push-message','output','toggle-recording-panel'])
 const isRecording = ref(false);
 
+// 处理发送消息方法
 const handleInputClick = () => {
   const inputArea = document.querySelector('.input-container')?.children[0];
   inputArea.rows = 1;
@@ -39,6 +40,7 @@ const handleInputClick = () => {
   input.value = ''
 }
 
+// 从讯飞接口获取数据后触发更新字幕看板
 const emitMessage = (data) => {
   const reg = /[.,?。，？]/ 
   if(data.length===1 && reg.test(data) ){
@@ -51,8 +53,11 @@ const emitMessage = (data) => {
     type: 0
   })
 }
+
+// 全局挂载的一个方法，用在讯飞的调用脚本中使用
 window.emitMessage = emitMessage;
 
+// 点击开始录音按钮
 const handleRecordStart = () => {
   iatrtcrecord.start()
   isRecording.value = true;
@@ -64,6 +69,7 @@ const handleRecordStart = () => {
   })
 }
 
+// 点击结束录音按钮
 const handleRecordEnd = ()=> {
   iatrtcrecord.stop()
   isRecording.value = false;
@@ -74,15 +80,18 @@ const handleRecordEnd = ()=> {
   })
 }
 
+// 将聊天内容以及字幕文本输出为文档
 const handleOutPut = () => {
   emit('output')
 }
 
+// 输入框focus后让它高度增加为10行
 const resizeElInput = (e) => {
   e.preventDefault();
   e.target.rows = 10;
 }
 
+// 输入框blur后恢复行数为1行显示
 const handleInputBlur = (e) => {
   setTimeout(()=>{
     e.target.rows = 1;
@@ -90,6 +99,7 @@ const handleInputBlur = (e) => {
 }
 
 onMounted(()=>{
+    // 当发起人修改本地字幕看板的显隐后，其他人监听字幕看板的显示隐藏触发本地看板显隐事件
    window.context.addMagixEventListener('changeRecordingShow',({payload})=>{
     isRecording.value = payload.isRecording;
     if(isRecording.value){
