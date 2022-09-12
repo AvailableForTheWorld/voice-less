@@ -45,7 +45,8 @@
       </ul>
     </div>
     <div class="mavon-editor-wrapper">
-      <mavon-editor v-model="mavonEditorValue" :toolbars="mavontoolbars"/>
+      <mavon-editor v-model="mavonEditorValue" :toolbars="mavontoolbars" @save="handleOutput">
+      </mavon-editor>
     </div>
   </div>
 </template>
@@ -154,7 +155,7 @@ const mavonTypeValue = ref('')
 const mavonRecordValue = ref('')
 const mavonEditorValue = ref(mavonTypeValue.value+mavonRecordValue.value)
 const mavonEditorHead = `
-  # 会议主题：
+# 会议主题：
 `
 
 const mavontoolbars = {
@@ -170,7 +171,7 @@ const mavontoolbars = {
     ol: true, // 有序列表
     ul: true, // 无序列表
     link: true, // 链接
-    imagelink: true, // 图片链接
+    imagelink: false, // 图片链接
     code: true, // code
     table: true, // 表格
     fullscreen: true, // 全屏编辑
@@ -209,6 +210,23 @@ const getList = (newVal)=>{
     return item.type == 0;
   })
   mavonEditorValue.value = mavonEditorHead +`## 文本信息：\n` + mavonTypeValue.value + '\n\n' + `## 字幕信息：\n` + mavonRecordValue.value;
+}
+
+const handleOutput = () => {
+  const target = mavonEditorValue.value;
+  let filename="会议内容.md";
+  //文件内容
+  let text=target;
+  let pom = document.createElement('a');
+  pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  pom.setAttribute('download', filename);
+  if (document.createEvent) {
+      let event = document.createEvent('MouseEvents');
+      event.initEvent('click', true, true);
+      pom.dispatchEvent(event);
+  } else {
+      pom.click();
+  }
 }
 
 watch(()=>props.list,(newVal)=>{
