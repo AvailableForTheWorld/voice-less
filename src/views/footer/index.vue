@@ -1,15 +1,15 @@
 <template>
   <div class="footer-container">
     <div>
-      <el-input class="input-container" v-model="input" placeholder="Please input" type="textarea" rows="1" @focus="resizeElInput" @blur="handleInputBlur" ref="textArea"/>
+      <el-input class="input-container" v-model="input" placeholder="请输入" type="textarea" rows="1" @focus="resizeElInput" @blur="handleInputBlur" ref="textArea" />
       <div v-if="!isRecording" class="cursor"  @click="handleRecordStart">
         <el-icon class="recording">
-          <img src="../../assets/icons/recording.svg" />
+          <img src="../../assets/icons/recording.svg" alt="" />
         </el-icon>
       </div>
       <div v-else class="cursor" @click="handleRecordEnd">
         <el-icon class="recording">
-          <img src="../../assets/icons/cancel-recording.svg" />
+          <img src="../../assets/icons/cancel-recording.svg" alt="" />
         </el-icon>
       </div>
       <el-button type="primary" @click="handleInputClick">发送</el-button>
@@ -88,14 +88,20 @@ const handleOutPut = () => {
 // 输入框focus后让它高度增加为10行
 const resizeElInput = (e) => {
   e.preventDefault();
-  e.target.rows = 10;
+  const footEle = document.querySelector<HTMLDivElement>('.footer-container');
+  if (footEle && footEle !== null) footEle.style.height = '200px';
+  e.target.rows = 9;
 }
 
 // 输入框blur后恢复行数为1行显示
 const handleInputBlur = (e) => {
-  setTimeout(()=>{
-    e.target.rows = 1;
-  },100)
+  e.preventDefault();
+  // footer-panel 元素 
+  const footEle = document.querySelector<HTMLDivElement>('.footer-container');
+  if (footEle && footEle !== null) footEle.style.height = '32px';
+  e.target.rows = 1;
+  // setTimeout(()=>{
+  // },100)
 }
 
 onMounted(()=>{

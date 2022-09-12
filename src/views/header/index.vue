@@ -1,11 +1,11 @@
 <template>
   <div class="header-container">
      <el-row style="width: 100%">
-        <el-col :span="12">
+        <el-col :span="16">
           <!-- search -->
-          <MessageSearch />            
+          <MessageSearch :list="list"/>            
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="select-wrapper" v-show="checkboxStore.isCheckboxShow">
             <div class="all-in" >
               <div class="checkbox">
@@ -41,6 +41,11 @@ checkboxStore.$subscribe((mutation,state)=>{
   window.context.dispatchMagixEvent('changeSumChecked',{checked: isAllChecked.value})
 })
 
+const {
+  list
+} = defineProps<{
+  list: any[]
+}>()
 const emit = defineEmits(['changeAllChecked'])
 
 // 全选所有文本信息
@@ -94,5 +99,13 @@ onMounted(()=>{
     cursor: pointer;
     margin-right: 20px;
   }
+}
+
+.select-wrapper {
+  display: flex;
+  align-items: center;
+  color: #000;
+  font-size: 12px;
+  height: 32px;
 }
 </style>
