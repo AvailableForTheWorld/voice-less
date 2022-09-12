@@ -150,7 +150,12 @@ const judgeRecordingPanelShow = computed(()=>{
   return false;
 })
 
-const mavonEditorValue = ref('')
+const mavonTypeValue = ref('')
+const mavonRecordValue = ref('')
+const mavonEditorValue = ref(mavonTypeValue.value+mavonRecordValue.value)
+const mavonEditorHead = `
+  # 会议主题：
+`
 
 const mavontoolbars = {
     bold: true, // 粗体
@@ -188,28 +193,32 @@ const mavontoolbars = {
     preview: true, // 预览
 }
 
-
-watch(()=>props.list,(newVal)=>{
+const getList = (newVal)=>{
+  mavonTypeValue.value=""
+  mavonRecordValue.value=""
   typeList.value = newVal.filter((item)=>{
-    mavonEditorValue.value+=item.content+'\n'
+    if(item.type == 1){
+      mavonTypeValue.value+=item.content+'\n'
+    }
     return item.type == 1;
   })
   captionList.value = newVal.filter((item)=>{
+    if(item.type == 0){
+      mavonRecordValue.value+=item.content+'\n'
+    }
     return item.type == 0;
   })
+  mavonEditorValue.value = mavonEditorHead +`## 文本信息：\n` + mavonTypeValue.value + '\n\n' + `## 字幕信息：\n` + mavonRecordValue.value;
+}
+
+watch(()=>props.list,(newVal)=>{
+  getList(newVal);
   scrollToEnd();
 },{deep:true})
 
 
 onMounted(()=>{
-  typeList.value = props.list.filter((item)=>{
-    mavonEditorValue.value+=item.content
-    return item.type == 1;
-  })
-  
-  captionList.value = props.list.filter((item)=>{
-    return item.type == 0;
-  })
+  getList(props.list)
   let cnt = 0,sum=0;
   for(let item in typeList.value){
     ++sum;
@@ -364,7 +373,11 @@ const getDate = (date)=>{
 }
 .mavon-editor-wrapper {
   position: fixed;
-  bottom: 0;
-  transform: translateY(100%);
+  top: 0;
+  right: 0;
+  transform: translateX(100%);
+  .shadow {
+    max-height: 400px;
+  }
 }
 </style>
