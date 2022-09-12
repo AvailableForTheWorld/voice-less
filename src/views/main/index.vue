@@ -234,6 +234,11 @@ watch(()=>props.list,(newVal)=>{
   scrollToEnd();
 },{deep:true})
 
+watch(mavonEditorValue,(val)=>{
+  if(val){
+    window.context.dispatchMagixEvent('changeMavonEditorValue',{data:mavonEditorValue.value})
+  }
+})
 
 onMounted(()=>{
   getList(props.list)
@@ -249,6 +254,9 @@ onMounted(()=>{
   checkboxStore.setCheckedCnt(cnt);
   window.context.addMagixEventListener('changeCheckboxShow',({payload})=>{
     checkboxStore.isCheckboxShow = payload.isCheckboxShow;
+  })
+  window.context.addMagixEventListener('changeMavonEditorValue',({payload})=>{
+    mavonEditorValue.value = payload.data
   })
   scrollToEnd();
 })
