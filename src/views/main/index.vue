@@ -20,7 +20,7 @@
           :key="button.text"
           :type="button.type"
           text
-          @click="handleCardOptionsClick(button.text,index)"
+          @click="handleCardOptionsClick(button.text,index,item)"
         >{{ button.text }}
         </el-button>
       </div>
@@ -65,7 +65,10 @@ const buttons = [
 ] as const
 
 const isChecked = ref(false)
+
+// typeList是用来表示文本文字的list
 const typeList = ref([])
+// captionList是用来表示字幕文本的list
 const captionList = ref([])
 const judgeAvatarDuplicated = (item,index) => {
   if(index && typeList.value[index-1]?.id == item.id){
@@ -76,6 +79,7 @@ const judgeAvatarDuplicated = (item,index) => {
 
 const isCardHover = ref(-1)
 
+// 点击checkbox触发事件（包括：选中，取消选中）
 const handleCheckBox = (item,index) => {
   if(item.isChecked){
     checkboxStore.cntPlus();
@@ -85,6 +89,7 @@ const handleCheckBox = (item,index) => {
   emit('check-message',index)
 }
 
+// hover当前文字卡片的事件
 const handleCardHover = (index)=> {
   isCardHover.value = index
 }
@@ -93,9 +98,10 @@ const handleCardMouseLeave = () => {
   isCardHover.value = -1
 }
 
-const handleCardOptionsClick = (text,index) => {
+// 文字卡片hover后tooltip弹出的处理方法
+const handleCardOptionsClick = (text,index,item) => {
   if(text === '删除'){
-    emit('del-message',index);
+    emit('del-message',item.idNum);
   }
   else if(text === '多选'){
     checkboxStore.setCheckboxShow(true);
@@ -119,6 +125,7 @@ const handleCardOptionsClick = (text,index) => {
   }
 }
 
+// 滑动到最底端触发的函数
 const scrollToEnd = ()=>{
   const dom = document.querySelector('.caption-content')
   setTimeout(()=>{
@@ -127,6 +134,7 @@ const scrollToEnd = ()=>{
   
 }
 
+// 手动触发显示隐藏变量
 const isHandleRecordingShow = ref(false);
 
 const judgeRecordingPanelShow = computed(()=>{
@@ -165,6 +173,7 @@ onMounted(()=>{
       ++cnt;
     }
   }
+  // 这里需要修改pinia状态中选中框的个数，在每次加载页面后需要计算checkbox的总数以及选中了的数量
   checkboxStore.setSum(sum);
   checkboxStore.setCheckedCnt(cnt);
   window.context.addMagixEventListener('changeCheckboxShow',({payload})=>{
@@ -173,7 +182,7 @@ onMounted(()=>{
   scrollToEnd();
 })
 
-
+// 每次hover文字卡片以及字幕上方的日期处理函数
 const getDate = (date)=>{
   const oldVal = new Date(date), newVal = new Date();
   const year = oldVal.getFullYear().toString().padStart(4, "0");
