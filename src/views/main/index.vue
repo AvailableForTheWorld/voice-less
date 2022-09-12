@@ -23,44 +23,45 @@
       <div class="show-time">{{getDate(item.date)}}</div>
     </div>
 
-    <div id="drag">
-      <div class="caption-container">
-        <div class="caption-header">
-          <el-button text class="caption-btn" :disabled="!judgeRecordingPanelShow"
-            @click="isHandleRecordingShow = false">
-            隐藏
-          </el-button>
-          <div>字幕显示</div>
-          <el-button text class="caption-btn" :disabled="judgeRecordingPanelShow" @click="isHandleRecordingShow = true">
-            显示</el-button>
-        </div>
-        <ul class="caption-content" v-if="judgeRecordingPanelShow">
-          <li v-for="(item,index) in captionList" :key="item.date">
-            <div class="caption-date">{{getDate(item.date)}}</div>
-            <div class="caption-words">
-              {{item.content}}
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <el-button type="button" @click="dialogVisible = true" class="SwitchTitle">
+      字幕
+    </el-button>
 
+    <el-dialog class="caption-container" v-model="dialogVisible" title="字幕" width="30%" draggable :modal="false"
+      :close-on-click-modal="true" :show-close="false">
+      <div class="caption-header">
+        <el-button text class="caption-btn" :disabled="!judgeRecordingPanelShow" @click="isHandleRecordingShow = false">
+          隐藏
+        </el-button>
+        <el-button text class="caption-btn" :disabled="judgeRecordingPanelShow" @click="isHandleRecordingShow = true">
+          显示
+        </el-button>
+      </div>
+      <ul class="caption-content" v-if="judgeRecordingPanelShow">
+        <li v-for="(item,index) in captionList" :key="item.date">
+          <div class="caption-date">{{getDate(item.date)}}</div>
+          <div class="caption-words">
+            {{item.content}}
+          </div>
+        </li>
+      </ul>
+    </el-dialog>
   </div>
 </template>
 
-<script lang="ts">
-
-
-</script>
 
 <script lang="ts" setup>
 import { defineProps, watch, toRefs, ref, watchEffect, onMounted, computed, defineEmits, onUpdated } from 'vue'
 import func from '../../../vue-temp/vue-editor-bridge';
 import { useCheckBox } from '../../stores/index';
 
+const dialogVisible = ref(true)
+
+
+
 const checkboxStore = useCheckBox();
 
-const props = defineProps(['list', 'info', 'isRecordingPanelShow', 'clipboardStr'])
+const props = defineProps(['list', 'info', 'isRecordingPanelShow'])
 
 const emit = defineEmits(['del-message', 'check-message'])
 
@@ -257,6 +258,36 @@ const getDate = (date) => {
   .fold {
     height: 10px;
     background-color: #aaaaaa;
+  }
+
+  .SwitchTitle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50% 0% 0% 50%;
+    border: none;
+    position: fixed;
+    top: 50%;
+    right: 0px;
+    color: #000;
+    font-weight: 900;
+
+    background: #ffffff;
+    box-shadow: -5px 5px 12px #8c8c8c,
+      5px -5px 12px #ffffff;
+  }
+
+  .el-dialog__header {
+    text-align: center;
+    height: 10px;
+    padding: 1% 0%;
+  }
+
+  .el-dialog__title {
+    color: black;
+  }
+
+  .el-dialog__body {
+    height: 10px;
   }
 
   .caption-container {

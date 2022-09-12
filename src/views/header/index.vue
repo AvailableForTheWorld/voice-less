@@ -47,7 +47,7 @@ const emit = defineEmits(['changeAllChecked', 'copyAllChecked', 'checkAllChecked
 const SwitchCheckStatus = () => {
   isShowSwitchOff.value = isAllChecked.value;
 
-  console.log(isShowSwitchOff);
+  console.log(isShowSwitchOff.value);
   
   emit('changeAllChecked', isAllChecked.value);
   checkboxStore.setFullChecked(isAllChecked.value)
@@ -56,7 +56,6 @@ const SwitchCheckStatus = () => {
 const handelCheckboxAll = () => {
   isShowSwitchOff.value = isAllChecked.value;
   console.log('---1');
-
   console.log(isShowSwitchOff);
 
   emit('checkAllChecked', isAllChecked.value);

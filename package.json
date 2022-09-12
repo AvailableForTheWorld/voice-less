@@ -24,7 +24,8 @@
     "unplugin-auto-import": "^0.10.3",
     "unplugin-vue-components": "^0.22.0",
     "vue": "^3.2.37",
-    "vue-drag-resize": "^1.5.4"
+    "vue-drag-resize": "^1.5.4",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@netless/fastboard": "^0.3.3",

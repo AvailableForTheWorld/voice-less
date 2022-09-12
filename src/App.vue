@@ -110,6 +110,7 @@ const handleDeleteAllChecked = (val) => {
       {
         const index = storeArr.indexOf(item, 0);
         storeArr.splice(index, 1)
+        window.context.dispatchMagixEvent('del-message', item.idNum)
       }
   })
 
