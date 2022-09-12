@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header-container @changeAllChecked="handleChangeAllChecked"></header-container>
+    <header-container @changeAllChecked="handleChangeAllChecked" @copyAllChecked="handleCopyAllChecked" @deleteAllChecked="handleDeleteAllChecked"></header-container>
     <main-container :list="messList" :info="infoList" :isRecordingPanelShow="isRecordingPanelShow" @delMessage="delMessage" @checkMessage="checkMessage"></main-container>
     <footer-container @pushMessage="pushMessage" @output="handleOutput" @toggleRecordingPanel="handleRecordingPanel"></footer-container>
   </div>
@@ -13,7 +13,8 @@ import { computed, inject, onMounted, onUpdated, reactive, ref, watchEffect,getC
 import MainContainer from '@/views/main/index.vue'
 import FooterContainer from '@/views/footer/index.vue'
 import HeaderContainer from '@/views/header/index.vue'
-import { useCheckBox } from './stores/index';
+import { useCheckBox } from './stores/index'
+
 const checkboxStore = useCheckBox();
 
 const vm = getCurrentInstance();
@@ -88,8 +89,35 @@ const handleChangeAllChecked = (val) => {
   storage.setState({arr:storeArr});
 }
 
+const handleCopyAllChecked = (val) => {
+  const storeArr = [...storage.state.arr];
+  let str = ''
+  storeArr.forEach((item)=>{
+    if (item.isChecked)
+    {
+      str += item.content
+      str += '\n'
+    }
+  })
+  navigator.clipboard.writeText(str)
+}
+
+const handleDeleteAllChecked = (val) => {
+  const storeArr = [...storage.state.arr];
+  console.log(storeArr);
+  storeArr.forEach((item)=>{
+      if (item.isChecked)
+      {
+        const index = storeArr.indexOf(item, 0);
+        storeArr.splice(index, 1)
+      }
+  })
+
+  storage.setState({arr:storeArr});
+}
 const messList = ref(storage.state.arr);
 const infoList = ref(storage.state.info);
+const checkList= ref(storage.state.msg)
 
 const container = ref(null);
 

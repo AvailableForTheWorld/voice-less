@@ -1,5 +1,5 @@
 {
-  "include": ["playground", "src"],
+  "include": ["playground", "src", "jsconfig.json"],
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,
@@ -8,6 +8,9 @@
     "module": "ESNext",
     "lib": ["ESNext", "DOM"],
     "types": ["vite/client"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "allowJs": true,
+    "jsx": "preserve",
   }
 }

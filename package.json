@@ -23,7 +23,8 @@
     "sass": "^1.54.2",
     "unplugin-auto-import": "^0.10.3",
     "unplugin-vue-components": "^0.22.0",
-    "vue": "^3.2.37"
+    "vue": "^3.2.37",
+    "vue-drag-resize": "^1.5.4"
   },
   "devDependencies": {
     "@netless/fastboard": "^0.3.3",

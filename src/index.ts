@@ -36,6 +36,7 @@ const VoiceLess: NetlessApp = {
     window.context = context;
     app.use(ElementPlus);
     app.use(createPinia());
+        //  app.use(VueDragResize);
     app.mount($content);
     context.emitter.on("destroy", () => {
       app.unmount();
