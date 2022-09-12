@@ -27,6 +27,7 @@
     "vue": "^3.2.37"
   },
   "devDependencies": {
+    "@element-plus/icons-vue": "^2.0.9",
     "@netless/fastboard": "^0.3.3",
     "@netless/window-manager": "^0.4.30",
     "@vitejs/plugin-vue": "^2.3.3",

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <header-container @changeAllChecked="handleChangeAllChecked"></header-container>
+  <div class="main-wrapper">
+    <header-container :list="messList" @changeAllChecked="handleChangeAllChecked"></header-container>
     <main-container :list="messList" :info="infoList" :isRecordingPanelShow="isRecordingPanelShow" @delMessage="delMessage" @checkMessage="checkMessage"></main-container>
     <footer-container @pushMessage="pushMessage" @output="handleOutput" @toggleRecordingPanel="handleRecordingPanel"></footer-container>
     
@@ -15,6 +15,8 @@ import MainContainer from '@/views/main/index.vue'
 import FooterContainer from '@/views/footer/index.vue'
 import HeaderContainer from '@/views/header/index.vue'
 import { useCheckBox } from './stores/index';
+import { lastEleScrollTop } from './utils/common';
+
 const checkboxStore = useCheckBox();
 
 const vm = getCurrentInstance();
@@ -47,8 +49,9 @@ const pushMessage = (item) => {
   }
   const item1 = { ...item, isChecked:false, idNum: idNum+1 }
   const arr = arr1.length?[...arr1,item1]:[item1];
-  storage.setState({arr})
-  scrollToEnd();
+  storage.setState({arr});
+  // 将最新的元素内容定位到顶部
+  lastEleScrollTop('div.user-message');
 }
 
 // 根据idNum这一标识符删除消息
@@ -149,6 +152,15 @@ onMounted(() =>{
 
 
 </script>
-<style lang="scss" scoped>
 
+<style lang="scss">
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* function lastEleScrollTop(arg0: string) {
+  throw new Error("Function not implemented.");
+} */
 </style>
