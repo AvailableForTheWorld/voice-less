@@ -44,6 +44,9 @@
         </li>
       </ul>
     </div>
+    <div class="mavon-editor-wrapper">
+      <mavon-editor v-model="mavonEditorValue" />
+    </div>
   </div>
 </template>
 
@@ -147,8 +150,11 @@ const judgeRecordingPanelShow = computed(()=>{
   return false;
 })
 
+const mavonEditorValue = ref('')
+
 watch(()=>props.list,(newVal)=>{
   typeList.value = newVal.filter((item)=>{
+    mavonEditorValue.value+=item.content
     return item.type == 1;
   })
   captionList.value = newVal.filter((item)=>{
@@ -160,6 +166,7 @@ watch(()=>props.list,(newVal)=>{
 
 onMounted(()=>{
   typeList.value = props.list.filter((item)=>{
+    mavonEditorValue.value+=item.content
     return item.type == 1;
   })
   
@@ -317,5 +324,10 @@ const getDate = (date)=>{
     padding: 6px 10px;
     font-size: 14px;
   }
+}
+.mavon-editor-wrapper {
+  position: fixed;
+  bottom: 0;
+  transform: translateY(100%);
 }
 </style>

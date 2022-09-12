@@ -3,6 +3,7 @@
     <header-container @changeAllChecked="handleChangeAllChecked"></header-container>
     <main-container :list="messList" :info="infoList" :isRecordingPanelShow="isRecordingPanelShow" @delMessage="delMessage" @checkMessage="checkMessage"></main-container>
     <footer-container @pushMessage="pushMessage" @output="handleOutput" @toggleRecordingPanel="handleRecordingPanel"></footer-container>
+    
   </div>
 </template>
 
@@ -134,6 +135,7 @@ const handleRecordingPanel = (val) => {
 }
 
 
+
 onMounted(() =>{
     // 为了使响应式获取数据进行的数据库内部值变更监听
     storage.addStateChangedListener(() => {
@@ -147,5 +149,6 @@ onMounted(() =>{
 
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+
 </style>
