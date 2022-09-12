@@ -378,6 +378,11 @@ const getDate = (date)=>{
   transform: translateX(100%);
   .shadow {
     max-height: 400px;
+    .v-note-panel {
+      .v-note-edit{
+        border-bottom-left-radius: 0 !important;
+      }
+    }
   }
 }
 </style>
