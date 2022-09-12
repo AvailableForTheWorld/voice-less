@@ -3,6 +3,7 @@
     <header-container :list="messList" @changeAllChecked="handleChangeAllChecked"></header-container>
     <main-container :list="messList" :info="infoList" :isRecordingPanelShow="isRecordingPanelShow" @delMessage="delMessage" @checkMessage="checkMessage"></main-container>
     <footer-container @pushMessage="pushMessage" @output="handleOutput" @toggleRecordingPanel="handleRecordingPanel"></footer-container>
+    
   </div>
 </template>
 
@@ -135,6 +136,7 @@ const isRecordingPanelShow = ref(false)
 const handleRecordingPanel = (val) => {
   isRecordingPanelShow.value = val;
 }
+
 
 
 onMounted(() =>{

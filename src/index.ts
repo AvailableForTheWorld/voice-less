@@ -6,6 +6,8 @@ import App from "./App.vue";
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import { createPinia } from "pinia";
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 /**
  * Register it before joining room:
  * ```js
@@ -36,6 +38,7 @@ const VoiceLess: NetlessApp = {
     window.context = context;
     app.use(ElementPlus);
     app.use(createPinia());
+    app.use(mavonEditor);
     app.mount($content);
     context.emitter.on("destroy", () => {
       app.unmount();

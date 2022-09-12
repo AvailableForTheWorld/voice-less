@@ -44,6 +44,10 @@
         </li>
       </ul>
     </div>
+    <div class="mavon-editor-wrapper">
+      <mavon-editor v-model="mavonEditorValue" :toolbars="mavontoolbars" @save="handleOutput">
+      </mavon-editor>
+    </div>
   </div>
 </template>
 
@@ -147,25 +151,97 @@ const judgeRecordingPanelShow = computed(()=>{
   return false;
 })
 
-watch(()=>props.list,(newVal)=>{
+const mavonTypeValue = ref('')
+const mavonRecordValue = ref('')
+const mavonEditorValue = ref(mavonTypeValue.value+mavonRecordValue.value)
+const mavonEditorHead = `
+# 会议主题：
+`
+
+const mavontoolbars = {
+    bold: true, // 粗体
+    italic: true, // 斜体
+    header: true, // 标题
+    underline: true, // 下划线
+    strikethrough: true, // 中划线
+    mark: true, // 标记
+    superscript: true, // 上角标
+    subscript: true, // 下角标
+    quote: true, // 引用
+    ol: true, // 有序列表
+    ul: true, // 无序列表
+    link: true, // 链接
+    imagelink: false, // 图片链接
+    code: true, // code
+    table: true, // 表格
+    fullscreen: true, // 全屏编辑
+    readmodel: true, // 沉浸式阅读
+    htmlcode: true, // 展示html源码
+    help: true, // 帮助
+    /* 1.3.5 */
+    undo: true, // 上一步
+    redo: true, // 下一步
+    trash: true, // 清空
+    save: true, // 保存（触发events中的save事件）
+    /* 1.4.2 */
+    navigation: true, // 导航目录
+    /* 2.1.8 */
+    alignleft: false, // 左对齐
+    aligncenter: false, // 居中
+    alignright: false, // 右对齐
+    /* 2.2.1 */
+    subfield: true, // 单双栏模式
+    preview: true, // 预览
+}
+
+const getList = (newVal)=>{
+  mavonTypeValue.value=""
+  mavonRecordValue.value=""
   typeList.value = newVal.filter((item)=>{
+    if(item.type == 1){
+      mavonTypeValue.value+=item.content+'\n'
+    }
     return item.type == 1;
   })
   captionList.value = newVal.filter((item)=>{
+    if(item.type == 0){
+      mavonRecordValue.value+=item.content+'\n'
+    }
     return item.type == 0;
   })
+  mavonEditorValue.value = mavonEditorHead +`## 文本信息：\n` + mavonTypeValue.value + '\n\n' + `## 字幕信息：\n` + mavonRecordValue.value;
+}
+
+const handleOutput = () => {
+  const target = mavonEditorValue.value;
+  let filename="会议内容.md";
+  //文件内容
+  let text=target;
+  let pom = document.createElement('a');
+  pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  pom.setAttribute('download', filename);
+  if (document.createEvent) {
+      let event = document.createEvent('MouseEvents');
+      event.initEvent('click', true, true);
+      pom.dispatchEvent(event);
+  } else {
+      pom.click();
+  }
+}
+
+watch(()=>props.list,(newVal)=>{
+  getList(newVal);
   scrollToEnd();
 },{deep:true})
 
+watch(mavonEditorValue,(val)=>{
+  if(val){
+    window.context.dispatchMagixEvent('changeMavonEditorValue',{data:mavonEditorValue.value})
+  }
+})
 
 onMounted(()=>{
-  typeList.value = props.list.filter((item)=>{
-    return item.type == 1;
-  })
-  
-  captionList.value = props.list.filter((item)=>{
-    return item.type == 0;
-  })
+  getList(props.list)
   let cnt = 0,sum=0;
   for(let item in typeList.value){
     ++sum;
@@ -178,6 +254,9 @@ onMounted(()=>{
   checkboxStore.setCheckedCnt(cnt);
   window.context.addMagixEventListener('changeCheckboxShow',({payload})=>{
     checkboxStore.isCheckboxShow = payload.isCheckboxShow;
+  })
+  window.context.addMagixEventListener('changeMavonEditorValue',({payload})=>{
+    mavonEditorValue.value = payload.data
   })
   scrollToEnd();
 })
@@ -318,6 +397,20 @@ const getDate = (date)=>{
   .el-card__body {
     padding: 6px 10px;
     font-size: 14px;
+  }
+}
+.mavon-editor-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  transform: translateX(100%);
+  .shadow {
+    max-height: 400px;
+    .v-note-panel {
+      .v-note-edit{
+        border-bottom-left-radius: 0 !important;
+      }
+    }
   }
 }
 </style>
