@@ -191,7 +191,7 @@ const mavontoolbars = {
 
 watch(()=>props.list,(newVal)=>{
   typeList.value = newVal.filter((item)=>{
-    mavonEditorValue.value+=item.content
+    mavonEditorValue.value+=item.content+'\n'
     return item.type == 1;
   })
   captionList.value = newVal.filter((item)=>{
