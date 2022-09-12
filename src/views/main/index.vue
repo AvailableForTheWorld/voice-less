@@ -209,7 +209,9 @@ const getDate = (date)=>{
 <style lang="scss">
 .main-container {
   position: relative;
-  padding: 50px 20px 30px;
+  /* padding: 50px 20px 30px; */
+  flex: 1;
+  overflow-y: auto;
   .user-message{
     position: relative;
     display: flex;
