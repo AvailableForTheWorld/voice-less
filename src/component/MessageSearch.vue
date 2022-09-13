@@ -2,7 +2,7 @@
  * @Author: yangrongxin
  * @Date: 2022-09-06 22:28:43
  * @LastEditors: yangrongxin
- * @LastEditTime: 2022-09-12 17:34:10
+ * @LastEditTime: 2022-09-13 22:33:49
 -->
 
 <script lang="ts" setup>
@@ -57,7 +57,8 @@ const searchResult = () => {
     }
     // 第一次搜索记录所有搜索数据
     props?.list.forEach(function(item, index) {
-        if ( item.originalContent === searchValue.value || item.content === searchValue.value ) {
+        const startIndex = ( item.originalContent || item.content ).indexOf(searchValue.value);
+        if ( startIndex !== -1 ) {
             if ( !item.originalContent ) item.originalContent = item.content;
             resultRecord.value.push(index);
             if ( searchTotalCount.value === 0 ) {
