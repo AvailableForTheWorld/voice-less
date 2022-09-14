@@ -2,7 +2,7 @@
  * @Author: yangrongxin
  * @Date: 2022-09-06 22:28:43
  * @LastEditors: yangrongxin
- * @LastEditTime: 2022-09-14 23:03:28
+ * @LastEditTime: 2022-09-14 23:41:55
 -->
 
 <script lang="ts" setup>
@@ -12,6 +12,11 @@ const searchValue = ref<string>('');
 const curSearchValue = ref<string>('');
 const searchCurrentCount = ref<number>(0);
 const searchTotalCount = ref<number>(0);
+
+enum MessageType {
+    Video,
+    String
+}
 
 const resultRecord = ref<number[]>([]);
 
@@ -29,10 +34,13 @@ const props = defineProps<{
     list: any[]
 }>()
 
+
 const searchResult = () => {
     if ( !Array.isArray(props?.list) && (props?.list as any[]).length === 0 ) {
         return; 
     }
+    const videoList = props.list.filter(item => item.type === MessageType.Video);
+    const stringList = props.list.filter(item => item.type === MessageType.String);
     // 记录当前搜索项目
     curSearchValue.value = searchValue.value;
     // 搜索到最后一个结果 继续搜索返回第一条
@@ -46,7 +54,8 @@ const searchResult = () => {
         props?.list.forEach(function(item, index) {
             if ( topIndex === index ) {
                 item.content = item.originalContent.replace(new RegExp(item.originalContent),'<font color="red">$&</font>')
-                const ele = document.querySelector(`div.user-message:nth-child(${index + 1})`)
+                const eleIndex = (item.type === MessageType.Video ? videoList : stringList).findIndex(fi => fi.date === item.date);
+                const ele = document.querySelector(`div.${item.type === MessageType.Video ? 'caption-words' : 'user-message'}:nth-child(${eleIndex})`)
                 ele?.scrollIntoView({ behavior: 'smooth' });
             } else {
                 item.content = item.originalContent || item.content;
@@ -63,7 +72,8 @@ const searchResult = () => {
             resultRecord.value.push(index);
             if ( searchTotalCount.value === 0 ) {
                 item.content = item.originalContent.replace(new RegExp(item.originalContent),'<font color="red">$&</font>')
-                const ele = document.querySelector(`div.user-message:nth-child(${index + 1})`)
+                const eleIndex = (item.type === MessageType.Video ? videoList : stringList).findIndex(fi => fi.date === item.date);
+                const ele = document.querySelector(`div.${item.type === MessageType.Video ? 'caption-words' : 'user-message'}:nth-child(${eleIndex})`)
                 ele?.scrollIntoView({ behavior: 'smooth' });
             }
             if ( searchCurrentCount.value === 0 ) searchTotalCount.value++;
