@@ -2,7 +2,7 @@
  * @Author: yangrongxin
  * @Date: 2022-09-06 22:28:43
  * @LastEditors: yangrongxin
- * @LastEditTime: 2022-09-13 22:33:49
+ * @LastEditTime: 2022-09-14 23:03:28
 -->
 
 <script lang="ts" setup>
@@ -85,7 +85,7 @@ const searchResult = () => {
             @keyup.enter="searchResult"
         >
             <template #append>
-                <el-icon color="#000"><Search /></el-icon>
+                <el-icon color="#000" @click="searchResult"><Search /></el-icon>
             </template>
         </el-input>
         <div>
