@@ -44,7 +44,7 @@
         </li>
       </ul>
     </div>
-    <div class="mavon-editor-wrapper">
+    <div class="mavon-editor-wrapper" v-if="editorShow">
       <mavon-editor v-model="mavonEditorValue" :toolbars="mavontoolbars" @save="handleOutput">
       </mavon-editor>
     </div>
@@ -52,6 +52,7 @@
 </template>
 
 <script lang="ts" setup>
+import editor from 'mavon-editor';
 import { defineProps,watch,toRefs,ref, watchEffect, onMounted, computed, defineEmits, onUpdated } from 'vue'
 import { useCheckBox } from '../../stores/index';
 
@@ -229,6 +230,15 @@ const handleOutput = () => {
   }
 }
 
+const editorShow = ref(false)
+const changeEditorShow = ()=>{
+  editorShow.value = !editorShow.value;
+  window.context.dispatchMagixEvent('changeMavonEditorShow',{show:editorShow.value});
+}
+defineExpose({
+  changeEditorShow,
+})
+
 watch(()=>props.list,(newVal)=>{
   getList(newVal);
   scrollToEnd();
@@ -257,6 +267,9 @@ onMounted(()=>{
   })
   window.context.addMagixEventListener('changeMavonEditorValue',({payload})=>{
     mavonEditorValue.value = payload.data
+  })
+  window.context.addMagixEventListener('changeMavonEditorShow',({payload})=>{
+    editorShow.value = payload.show
   })
   scrollToEnd();
 })

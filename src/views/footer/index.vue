@@ -13,7 +13,7 @@
         </el-icon>
       </div>
       <el-button type="primary" @click="handleInputClick">发送</el-button>
-      <el-button type="warning" @click="handleOutPut">导出</el-button>
+      <el-button type="warning" @click="handlePreview">预览</el-button>
     </div>
   </div>
 </template>
@@ -24,7 +24,7 @@ import { iatrtcrecord } from '@/utils/index.js'
 import { ElMessage } from 'element-plus'
 
 const input = ref('')
-const emit = defineEmits(['push-message','output','toggle-recording-panel'])
+const emit = defineEmits(['push-message','preview','toggle-recording-panel'])
 const isRecording = ref(false);
 
 // 处理发送消息方法
@@ -81,8 +81,8 @@ const handleRecordEnd = ()=> {
 }
 
 // 将聊天内容以及字幕文本输出为文档
-const handleOutPut = () => {
-  emit('output')
+const handlePreview = () => {
+  emit('preview')
 }
 
 // 输入框focus后让它高度增加为10行

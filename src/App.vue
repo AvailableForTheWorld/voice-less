@@ -1,8 +1,8 @@
 <template>
   <div class="main-wrapper">
     <header-container :list="messList" @changeAllChecked="handleChangeAllChecked"></header-container>
-    <main-container :list="messList" :info="infoList" :isRecordingPanelShow="isRecordingPanelShow" @delMessage="delMessage" @checkMessage="checkMessage"></main-container>
-    <footer-container @pushMessage="pushMessage" @output="handleOutput" @toggleRecordingPanel="handleRecordingPanel"></footer-container>
+    <main-container ref="mainContent" :list="messList" :info="infoList" :isRecordingPanelShow="isRecordingPanelShow" @delMessage="delMessage" @checkMessage="checkMessage"></main-container>
+    <footer-container @pushMessage="pushMessage" @preview="handlePreview" @toggleRecordingPanel="handleRecordingPanel"></footer-container>
     
   </div>
 </template>
@@ -111,24 +111,10 @@ const scrollToEnd = ()=>{
   
 }
 
-// 处理输出文件（后续得优化）
-const handleOutput = () => {
-  const target = storage.state.arr.map((item)=>{
-    return 'id '+ item.id + ' : ' + item.content;
-  }).join('\n');
-  let filename="聊天内容";
-  //文件内容
-  let text=target;
-  let pom = document.createElement('a');
-  pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-  pom.setAttribute('download', filename);
-  if (document.createEvent) {
-      let event = document.createEvent('MouseEvents');
-      event.initEvent('click', true, true);
-      pom.dispatchEvent(event);
-  } else {
-      pom.click();
-  }
+// 处理预览弹窗显示
+const mainContent = ref(null)
+const handlePreview = () => {
+  mainContent.value.changeEditorShow();
 }
 
 // isRecordingPanelShow 变量用来展示字幕的panel是否显示
