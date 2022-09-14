@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "element-plus": "^2.2.12",
+    "mavon-editor": "3.0.0-beta",
     "pinia": "^2.0.17",
     "sass": "^1.54.2",
     "unplugin-auto-import": "^0.10.3",
