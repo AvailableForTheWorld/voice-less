@@ -92,7 +92,7 @@ const searchResult = () => {
         <el-input
             v-model="searchValue"
             placeholder="搜索"
-            @input="searchResult"
+            @keyup.enter="searchResult"
         >
             <template #append>
                 <el-icon color="#000" @click="searchResult"><Search /></el-icon>
