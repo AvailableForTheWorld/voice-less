@@ -1,7 +1,7 @@
 <template>
   <div class="footer-container">
     <div >
-      <el-input class="input-container" v-model="input" placeholder="请输入" type="textarea" rows="1" @focus="resizeElInput" ref="textArea" />
+      <el-input class="input-container" v-model="input" placeholder="请输入" type="textarea" rows="1" @focus="resizeElInput" @blur="handleInputBlur" ref="textArea" />
       <div v-if="!isRecording" class="cursor"  @click="handleRecordStart">
         <el-icon class="recording">
           <img src="../../assets/icons/recording.svg" alt="" />
@@ -102,9 +102,11 @@ const resizeElInput = (e) => {
 const handleInputBlur = (e) => {
   e.preventDefault();
   // footer-panel 元素 
-  const footEle = document.querySelector<HTMLDivElement>('.footer-container');
-  if (footEle && footEle !== null) footEle.style.height = '32px';
-  e.target.rows = 1;
+  setTimeout(()=>{
+    const footEle = document.querySelector<HTMLDivElement>('.footer-container');
+    if (footEle && footEle !== null) footEle.style.height = '32px';
+    e.target.rows = 1;
+  },100)
 }
 
 onMounted(()=>{
