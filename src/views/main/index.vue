@@ -29,7 +29,33 @@
       <div class="show-time">{{getDate(item.date)}}</div>
     </div>
 
-    <div class="caption-container">
+
+    <el-button type="button" @click="dialogVisible = true" class="SwitchTitle">
+    字幕
+  </el-button>
+
+  <el-dialog class="caption-container" v-model="dialogVisible" title="字幕" width="30%" draggable :modal="false"
+    :close-on-click-modal="true" :show-close="false">
+    <div class="caption-header">
+      <el-button text class="caption-btn" :disabled="!judgeRecordingPanelShow" @click="isHandleRecordingShow = false">
+        隐藏
+      </el-button>
+      <el-button text class="caption-btn" :disabled="judgeRecordingPanelShow" @click="isHandleRecordingShow = true">
+        显示
+      </el-button>
+    </div>
+    <ul class="caption-content" v-if="judgeRecordingPanelShow">
+      <li v-for="(item,index) in captionList" :key="item.date">
+        <div class="caption-date">{{getDate(item.date)}}</div>
+        <div class="caption-words">
+          {{item.content}}
+        </div>
+      </li>
+    </ul>
+  </el-dialog>
+
+
+    <!-- <div class="caption-container">
       <div class="caption-header">
         <el-button text class="caption-btn" :disabled="!judgeRecordingPanelShow" @click="isHandleRecordingShow = false">隐藏</el-button>
         <div>字幕显示</div>
@@ -43,7 +69,7 @@
           </div>
         </li>
       </ul>
-    </div>
+    </div> -->
     <div class="mavon-editor-wrapper" v-if="editorShow">
       <mavon-editor v-model="mavonEditorValue" :toolbars="mavontoolbars" @save="handleOutput">
       </mavon-editor>
@@ -158,6 +184,8 @@ const mavonEditorValue = ref(mavonTypeValue.value+mavonRecordValue.value)
 const mavonEditorHead = `
 # 会议主题：
 `
+
+const dialogVisible = ref(false)
 
 const mavontoolbars = {
     bold: true, // 粗体
