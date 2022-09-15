@@ -14,7 +14,7 @@
               <label>全选</label>
             </div>
             <div class="cancel" @click="handelCheckboxCancel">
-              <span>取消多选</span>
+              <el-button type="danger" link>取消多选</el-button>
             </div>
           </div>
         </el-col>
@@ -80,16 +80,12 @@ onMounted(()=>{
   background-color: white;
   height: 32px;
   .all-in{
-    height: 50px;
     text-align: left;
-    line-height: 50px;
     margin-left: 20px;
     display: flex;
+    align-items: center;
     .checkbox{
-      width: 50px;
-      height: 50px;
       text-align: center;
-      line-height: 50px;
       .input-checkbox {
         cursor: pointer;
       }
@@ -97,7 +93,7 @@ onMounted(()=>{
   }
   .cancel {
     cursor: pointer;
-    margin-right: 20px;
+    margin-left: 20px;
   }
 }
 
