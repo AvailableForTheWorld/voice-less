@@ -99,9 +99,9 @@ const searchResult = () => {
             </template>
         </el-input>
         <div>
-            <span>当前第{{searchCurrentCount}}个</span>
+            <span>第{{searchCurrentCount}}项</span>
             <span>/</span>
-            <span>共{{searchTotalCount}}个结果</span>
+            <span>共{{searchTotalCount}}项</span>
         </div>
     </div>
 </template>
