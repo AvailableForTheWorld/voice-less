@@ -148,6 +148,9 @@ onMounted(() =>{
   height: 100%;
 }
 
+.tele-fancy-scrollbar{
+  overflow: hidden;
+}
 /* function lastEleScrollTop(arg0: string) {
   throw new Error("Function not implemented.");
 } */

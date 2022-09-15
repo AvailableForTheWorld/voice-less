@@ -92,16 +92,16 @@ const searchResult = () => {
         <el-input
             v-model="searchValue"
             placeholder="搜索"
-            @keyup.enter="searchResult"
+            @input="searchResult"
         >
             <template #append>
                 <el-icon color="#000" @click="searchResult"><Search /></el-icon>
             </template>
         </el-input>
         <div>
-            <span>当前第{{searchCurrentCount}}个</span>
+            <span>第{{searchCurrentCount}}项</span>
             <span>/</span>
-            <span>共{{searchTotalCount}}个结果</span>
+            <span>共{{searchTotalCount}}项</span>
         </div>
     </div>
 </template>
