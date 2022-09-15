@@ -51,7 +51,9 @@ const pushMessage = (item) => {
   const arr = arr1.length?[...arr1,item1]:[item1];
   storage.setState({arr});
   // 将最新的元素内容定位到顶部
-  lastEleScrollTop('div.user-message');
+  setTimeout(()=>{
+    lastEleScrollTop('div.user-message');
+  },100)
 }
 
 // 根据idNum这一标识符删除消息

@@ -7,6 +7,8 @@
 
 // 将当前元素滚动到视图区域
 export function lastEleScrollTop(selector: string): void {
+  console.log(Array.from(document.querySelectorAll(selector))
+  ?.at(-1))
   Array.from(document.querySelectorAll(selector))
     ?.at(-1)
     ?.scrollIntoView({ behavior: 'smooth' });

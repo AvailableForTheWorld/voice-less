@@ -339,7 +339,7 @@ const getDate = (date)=>{
     right: 20px;
     transform: translateY(-50%);
     width: 200px;
-    height: 300px;
+    height: fit-content;
     
     color: #fff;
     border-radius: 4px;
